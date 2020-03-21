@@ -24,4 +24,3 @@ class player(object):
 
     def render(self, screen):
         pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
-
