@@ -30,10 +30,36 @@ class human(object):
         pygame.draw.circle(screen, (255,255,255), (self.posx, self.posy), 10)
 
     def movement(self, screen):
-        pygame.draw.circle(screen, (0,0,0), (self.posx, self.posy), 10)
         self.posx += self.movx
         self.posy += self.movy
         pygame.draw.circle(screen, (255,255,255), (self.posx, self.posy), 10)
+
+
+class player(object):
+    def __init__(self, screen):
+        self.posx = 400
+        self.posy = 300
+        pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
+
+    def handle_input(self, key):
+        # Linke Pfeiltaste wird gedrückt:
+        if key == pygame.K_LEFT:
+            # x-Position der Spielfigur anpassen,
+            self.posx -= 1
+        # Und nochmal für die rechte Pfeiltaste.
+        if key == pygame.K_RIGHT:
+            self.posx += 1
+        if key == pygame.K_UP:
+            self.posy -= 1
+        if key == pygame.K_DOWN:
+            self.posy += 1
+
+    def render(self, screen):
+        pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
+
+
+
+
 
 def main():
 
@@ -44,6 +70,7 @@ def main():
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
     human_list = [human(800,600,screen) for i in range(10)]
+    me = player(screen)
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
 
@@ -65,11 +92,12 @@ def main():
         # Pygame wartet, falls das Programm schneller läuft.
         clock.tick(30)
         # screen-Surface mit Schwarz (RGB = 0, 0, 0) füllen.
+        screen.fill((0,0,0))
         # Alle aufgelaufenen Events holen und abarbeiten.
 
         for person in human_list:
             person.movement(screen)
-        pygame.display.update()
+
 
         for event in pygame.event.get():
             # Spiel beenden, wenn wir ein QUIT-Event finden.
@@ -77,9 +105,12 @@ def main():
                 running = False
             # Wir interessieren uns auch für "Taste gedrückt"-Events.
             if event.type == pygame.KEYDOWN:
+                me.handle_input(event.key)
                 # Wenn Escape gedrückt wird, posten wir ein QUIT-Event in Pygames Event-Warteschlange.
                 if event.key == pygame.K_ESCAPE:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
+        me.render(screen)
+        pygame.display.update()
         # Inhalt von screen anzeigen.
         pygame.display.flip()
 
