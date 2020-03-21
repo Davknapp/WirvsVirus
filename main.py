@@ -32,24 +32,13 @@ class human(object):
         pygame.draw.circle(screen, self.color, (self.posx, self.posy), 10)
 
     def movement(self, screen):
-        angle_change = False
-        if self.posy <= 10:
-            self.alpha = -self.alpha
-            angle_change = True
-        if self.posy >= 590:
-            self.alpha = -self.alpha
-            angle_change = True
-        if self.posx <= 10:
-            self.alpha = self.alpha-270
-            angle_change = True
-        if self.posx >= 790:
-            self.alpha = self.alpha-270
-            angle_change = True
 
-
-        if angle_change:
-            self.movx = int(np.cos(self.alpha)*10)
-            self.movy = int(np.sin(self.alpha)*10)
+        # Boundary reflection
+        limit_x, limit_y = screen.get_size()
+        if (self.posx <= 0) or (self.posx >= limit_x):
+            self.movx *= (-1)
+        if (self.posy <= 0) or (self.posy >= limit_y):
+            self.movy *= (-1)
 
         self.posx += self.movx
         self.posy += self.movy
