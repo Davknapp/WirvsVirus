@@ -3,6 +3,8 @@ import random
 import numpy as np
 from img_lib import get_image
 
+from classes.simulation import next_velocity, KEEP_BEHAVIOUR_FOR_MS
+
 class human(object):
     #define position of the human,  and the current movement.
     #draw a cricle representing the human.
@@ -12,18 +14,29 @@ class human(object):
         self.id = id
         self.screen = screen
         self.r = r
-        self.v = v
         self.posx = random.randint(0,limit_x)
         self.posy = random.randint(0,limit_y)
-        self.alpha = random.random()*2*np.pi
-        self.movx = np.cos(self.alpha)*self.v
-        self.movy = np.sin(self.alpha)*self.v
+        alpha = random.random()*2*np.pi
+        self.set_velocity_vector(v, alpha)
         self.infected = False
         self.img = img
         self.render(screen)
         #screen.blit(self.img, (self.posx, self.posy) )
+        self.next_behaviour_change = 0
+
+    def set_velocity_vector(self, v, alpha):
+        self.v = v
+        self.alpha = alpha
+        self.movx = np.cos(self.alpha) * v
+        self.movy = np.sin(self.alpha) * v
 
     def movement(self):
+        # Maybe change behaviour
+        if pygame.time.get_ticks() > self.next_behaviour_change:
+            v, next_change = next_velocity()
+            self.next_behaviour_change += next_change
+            self.set_velocity_vector(v, self.alpha)
+
         # Boundary reflection
         limit_x, limit_y = self.screen.get_size()
         if (self.posx <= 0) or (self.posx >= limit_x):
@@ -55,6 +68,9 @@ class human(object):
     def infection(self):
         self.infected = True
         self.img = pygame.transform.scale(get_image('infected2.png'), (20, 20))
+
+    def change_velocity(self):
+        pass
 
     def render(self, screen):
         screen.blit(self.img, (self.posx, self.posy) )
