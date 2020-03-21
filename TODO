@@ -1,3 +1,7 @@
 General TODOs (not code related).
 
 - Create a github team and move the repo to the team site
+- Choose a license and put it in here. In my opinion LGPL fits good.
+  See https://choosealicense.com/licenses/
+- Rename the repository 'wirvsvirus' is too general and applies to all codes developed
+  during the Hackathon.
