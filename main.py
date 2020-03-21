@@ -13,8 +13,9 @@ import numpy as np
 
 from classes.human import human
 from classes.player import player
+from img_lib import get_image,  background
 from classes.model import Model
-from img_lib import get_image
+
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
 
@@ -36,6 +37,8 @@ def main():
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
 
+    back = background('map.png', [0,0])
+    #screen.fill([255, 255, 255])
     # Init. humans
     model = Model()
     humans = [human(id, screen, model, r=radius, v=speed) for id in range(N_humans)]
@@ -64,7 +67,8 @@ def main():
         # Pygame wartet, falls das Programm schneller läuft.
         clock.tick(30)
         # screen-Surface mit Schwarz (RGB = 0, 0, 0) füllen.
-        screen.fill((0,0,0))
+        #screen.fill((0,0,0))
+        screen.blit(back.image,back.rect)
         # Alle aufgelaufenen Events holen und abarbeiten.
 
         for id, person in enumerate(humans):
