@@ -4,7 +4,14 @@ Bitte halte dich an folgenden Workflow:
 2. Neuen branch erstellen nach dem Format VORNAME/FEATURENAME
     - zum Beispiel johannes/parameter-regler
 3. Code entwickeln, Zwischenschritte committen und pushen
-4. Wenn es einen End- oder Zwischenstand gibt, der eingebaut werden kann, erstelle einen merge request in master
+4. Wenn es einen End- oder Zwischenstand gibt, der eingebaut werden kann
+
+    a. merge origin/master in deinen branch
+    ```
+    git fetch origin
+    git merge origin/master
+    ```
+    b. erstelle auf github einen merge request, um deinen Branch in den master zu mergen.
 5. Auf Code Review reagieren.
 6. zurueck zu Schritt 3 oder 1
 
@@ -18,7 +25,14 @@ Please stick to the following workflow:
 2. Create a new branch NAME/FEATURENAME
     - example: johannes/parameter-regler
 3. Coding time, commit and push sub-steps
-4. Once you have something that can be integrated into master, create a merge request
+4. Once you have something that can be integrated into master:
+
+    a. merge master into your branch
+    ```
+    git fetch origin
+    git merge origin/master
+    ```
+    b. create a merge request to merge your branch into master
 5. React to code review
 6. Back to step 3 or 1.
 
