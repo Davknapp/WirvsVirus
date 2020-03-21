@@ -10,11 +10,11 @@ class player(object):
         pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
 
     def handle_input(self, key):
-        # Linke Pfeiltaste wird gedrückt:
+        # linke Pfeiltaste wird gedrueckt
         if key == pygame.K_LEFT:
             # x-Position der Spielfigur anpassen,
             self.posx -= 1
-        # Und nochmal für die rechte Pfeiltaste.
+        # und nochmal die rechte Pfeiltaste
         if key == pygame.K_RIGHT:
             self.posx += 1
         if key == pygame.K_UP:
