@@ -21,6 +21,4 @@ class player(object):
             self.posy += 1
 
     def render(self, screen):
-        #pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
         screen.blit(self.img, (self.posx, self.posy) )
-
