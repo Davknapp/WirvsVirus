@@ -3,7 +3,7 @@ import random
 import numpy as np
 from img_lib import get_image
 
-from classes.simulation import SocialDistancingSimulation
+from classes.social_distancing import SocialDistancingSimulation
 
 class human(object):
     #define position of the human,  and the current movement.
