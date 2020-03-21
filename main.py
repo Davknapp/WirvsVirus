@@ -13,7 +13,7 @@ import numpy as np
 
 from classes.human import human 
 from classes.player import player
-from img_lib import get_image
+from img_lib import get_image,  background
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
 
@@ -34,8 +34,11 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
-    # Init. humans
+    back = background('map.png', [0,0])
+    #screen.fill([255, 255, 255])
+
     
+    # Init. humans
     img = pygame.transform.scale(get_image('healthy.png'), (20, 20))
     humans = [human(id, screen, img,  r=radius, v=speed) for id in range(N_humans)]
     humans[0].infection()
@@ -63,7 +66,8 @@ def main():
         # Pygame wartet, falls das Programm schneller läuft.
         clock.tick(30)
         # screen-Surface mit Schwarz (RGB = 0, 0, 0) füllen.
-        screen.fill((0,0,0))
+        #screen.fill((0,0,0))
+        screen.blit(back.image,back.rect)
         # Alle aufgelaufenen Events holen und abarbeiten.
 
         for person in humans:
