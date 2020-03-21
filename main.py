@@ -13,6 +13,7 @@ import numpy as np
 
 from classes.human import human
 from classes.player import player
+from classes.model import Model
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
 
@@ -22,7 +23,7 @@ if not pygame.mixer: print('Fehler pygame.mixer Modul konnte nicht geladen werde
 
 random.seed()
 
-N_humans = 50
+N_humans = 100
 radius = 10
 speed = 5
 
@@ -35,7 +36,9 @@ def main():
     screen.fill((0, 0, 0))
 
     # Init. humans
-    humans = [human(id, screen, r=radius, v=speed) for id in range(N_humans)]
+    model = Model()
+    humans = [human(id, screen, model, r=radius, v=speed) for id in range(N_humans)]
+    # humans_positions = np.array([[humans[id].posx, humans[id].posy] for id in range(N_humans)])
     humans[0].infection()
     me = player(screen)
 
@@ -63,10 +66,13 @@ def main():
         screen.fill((0,0,0))
         # Alle aufgelaufenen Events holen und abarbeiten.
 
-        for person in humans:
-             # normalize = True -> Geschwindigkeit ist konstant
-             # normalize = False -> Geschwindigkeit ist "physikalisch"
+        for id, person in enumerate(humans):
+            # humans_positions[id,0] = person.posx
+            # humans_positions[id,1] = person.posy
+            # normalize = True -> Geschwindigkeit ist konstant
+            # normalize = False -> Geschwindigkeit ist "physikalisch"
             person.collisions(humans, normalize=True)
+            person.check_state()
             person.movement()
             person.render()
 

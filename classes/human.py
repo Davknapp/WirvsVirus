@@ -1,14 +1,18 @@
 import pygame
 import random
 import numpy as np
+#import scipy as sp
+from pygame.time import get_ticks as time_now
 
 class human(object):
     #define position of the human,  and the current movement.
     #draw a cricle representing the human.
-    def __init__(self, id, screen, v=5, r=10):
+    def __init__(self, id, screen, model, v=5, r=10):
         limit_x, limit_y = screen.get_size()
         self.id = id
         self.screen = screen
+        self.model = model
+        self.collisions_active = True
         self.r = r
         self.v = v
         self.posx = random.randint(0,limit_x)
@@ -16,8 +20,10 @@ class human(object):
         self.alpha = random.random()*2*np.pi
         self.movx = np.cos(self.alpha)*self.v
         self.movy = np.sin(self.alpha)*self.v
-        self.infected = False
-        self.color=(255,255,255)
+        self.state = 'well'
+        self.time_infected = None
+        self.immune = False
+        self.color = (255,255,255)
         self.render()
 
     def movement(self):
@@ -31,11 +37,12 @@ class human(object):
         self.posx += self.movx
         self.posy += self.movy
 
-    def collisions(self, humans, normalize=False):
+    def collisions(self, humans, normalize=True):
         # Collisions mechanics
         for id in range(self.id+1, len(humans)):
             dx = self.posx - humans[id].posx
             dy = self.posy - humans[id].posy
+            if not self.collisions_active: continue
             if (dx**2 + dy**2) < (2*self.r)**2:
                 if normalize:
                     vx, vy = self.v, self.v
@@ -48,9 +55,31 @@ class human(object):
                 humans[id].movx = -np.cos(angle)*vx
                 humans[id].movy = -np.sin(angle)*vy
 
+                if (humans[id].state == 'infected') and (not self.state == 'infected'):
+                    self.infection()
+                if (self.state == 'infected') and (not humans[id].state == 'infected'):
+                    humans[id].infection()
+
+    def check_state(self):
+        self.model.set_state(self)
+
+        if (self.state == 'dead'):
+            self.collisions_active = False
+
+        colorcode = {'well': (255,255,255),
+                     'infected': (0,255,0),
+                     'recovered': (0,0,255),
+                     'dead': (255,0,0)
+                    }
+
+        self.color = colorcode[self.state]
+
     def infection(self):
-        self.infected = True
+        if self.state == 'dead' or self.state == 'recovered': return
+        self.state = 'infected'
+        print('infected')
+        self.time_infected = time_now()
         self.color = (0,255,0)
 
     def render(self):
-        pygame.draw.circle(self.screen, self.color, (int(self.posx), int(self.posy)), self.r)
+        pygame.draw.circle(self.screen, self.color, (int(self.posx), int(self.posy)), int(self.r))
