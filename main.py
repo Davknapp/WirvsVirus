@@ -11,8 +11,9 @@ import numpy as np
 
 # Import classes
 
-from classes.human import human
+from classes.human import human 
 from classes.player import player
+from img_lib import get_image
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
 
@@ -30,9 +31,12 @@ def main():
 
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
-    human_list = [human(800,600,screen) for i in range(10)]
+    img = pygame.transform.scale(get_image('healthy.png'), (20, 20))
+    human_list = [human(800,600,screen,  img) for i in range(10)]
     human_list[0].infection()
-    me = player(screen)
+    
+    me_img = pygame.transform.scale(get_image('myself.png'), (20, 20))
+    me = player(screen,  me_img)
     positions = np.array([(person.posx, person.posy) for person in human_list])
 
 

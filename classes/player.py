@@ -1,14 +1,12 @@
 import pygame
-import random
-import numpy as np
 
-
+    
 class player(object):
-    def __init__(self, screen):
+    def __init__(self, screen,  img):
         self.posx = 400
         self.posy = 300
-        pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
-
+        self.img = img
+        screen.blit(self.img, (self.posx, self.posy) )
     def handle_input(self, key):
         # linke Pfeiltaste wird gedrueckt
         if key == pygame.K_LEFT:
@@ -23,5 +21,6 @@ class player(object):
             self.posy += 1
 
     def render(self, screen):
-        pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
+        #pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
+        screen.blit(self.img, (self.posx, self.posy) )
 

@@ -1,22 +1,12 @@
 import pygame
-import os
 import random
 import numpy as np
+from img_lib import get_image
 
-_image_library = {}
-def get_image(path):
-        global _image_library
-        image = _image_library.get(path)
-        if image == None:
-                canonicalized_path = path.replace('/', os.sep).replace('\\', os.sep)
-                image = pygame.image.load(canonicalized_path)
-                _image_library[path] = image
-        return image
-        
 class human(object):
     #define position of the human,  and the current movement.
     #draw a cricle representing the human.
-    def __init__(self, limit_x, limit_y,  screen):
+    def __init__(self, limit_x, limit_y,  screen,  img):
         self.posx = random.randint(0,limit_x)
         self.posy = random.randint(0,limit_y)
         self.alpha = random.randint(0,359)
@@ -24,7 +14,8 @@ class human(object):
         self.movy = int(np.sin(self.alpha)*10)
         self.infected = False
         self.color=(255,255,255)
-        pygame.draw.circle(screen, self.color, (self.posx, self.posy), 10)
+        self.img = img
+        screen.blit(self.img, (self.posx, self.posy) )
 
     def movement(self, screen):
 
@@ -37,8 +28,8 @@ class human(object):
 
         self.posx += self.movx
         self.posy += self.movy
-        pygame.draw.circle(screen, self.color, (self.posx, self.posy), 10)
+        screen.blit(self.img, (self.posx, self.posy) )
 
     def infection(self):
         self.infected = True
-        self.color = (0,255,0)
+        self.img = pygame.transform.scale(get_image('infected2.png'), (20, 20))
