@@ -24,15 +24,40 @@ class human(object):
     def __init__(self, limit_x, limit_y,  screen):
         self.posx = random.randint(0,limit_x)
         self.posy = random.randint(0,limit_y)
-        alpha = random.randint(0,359)
-        self.movx = int(np.cos(alpha)*10)
-        self.movy = int(np.sin(alpha)*10)
-        pygame.draw.circle(screen, (255,255,255), (self.posx, self.posy), 10)
+        self.alpha = random.randint(0,359)
+        self.movx = int(np.cos(self.alpha)*10)
+        self.movy = int(np.sin(self.alpha)*10)
+        self.infected = False
+        self.color=(255,255,255)
+        pygame.draw.circle(screen, self.color, (self.posx, self.posy), 10)
 
     def movement(self, screen):
+        angle_change = False
+        if self.posy <= 10:
+            self.alpha = -self.alpha
+            angle_change = True
+        if self.posy >= 590:
+            self.alpha = -self.alpha
+            angle_change = True
+        if self.posx <= 10:
+            self.alpha = self.alpha-270
+            angle_change = True
+        if self.posx >= 790:
+            self.alpha = self.alpha-270
+            angle_change = True
+
+
+        if angle_change:
+            self.movx = int(np.cos(self.alpha)*10)
+            self.movy = int(np.sin(self.alpha)*10)
+
         self.posx += self.movx
         self.posy += self.movy
-        pygame.draw.circle(screen, (255,255,255), (self.posx, self.posy), 10)
+        pygame.draw.circle(screen, self.color, (self.posx, self.posy), 10)
+
+    def infection(self):
+        self.infected = True
+        self.color = (0,255,0)
 
 
 class player(object):
@@ -70,7 +95,11 @@ def main():
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
     human_list = [human(800,600,screen) for i in range(10)]
+    human_list[0].infection()
     me = player(screen)
+    positions = np.array([(person.posx, person.posy) for person in human_list])
+
+
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
 
@@ -97,6 +126,8 @@ def main():
 
         for person in human_list:
             person.movement(screen)
+
+
 
 
         for event in pygame.event.get():
