@@ -7,3 +7,5 @@ Bitte halte dich an folgenden Workflow:
 4. Wenn es einen End- oder Zwischenstand gibt, der eingebaut werden kann, erstelle einen merge request in master
 5. Auf Code Review reagieren.
 6. zurueck zu Schritt 3 oder 1
+
+Danke sehr fuer deinen Beitrag :)
