@@ -11,7 +11,7 @@ import numpy as np
 
 # Import classes
 
-from classes.human import human 
+from classes.human import human
 from classes.player import player
 from img_lib import get_image
 
@@ -23,7 +23,7 @@ if not pygame.mixer: print('Fehler pygame.mixer Modul konnte nicht geladen werde
 
 random.seed()
 
-N_humans = 50
+N_humans = 100
 radius = 10
 speed = 5
 
@@ -35,7 +35,7 @@ def main():
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
     # Init. humans
-    
+
     img = pygame.transform.scale(get_image('healthy.png'), (20, 20))
     humans = [human(id, screen, img,  r=radius, v=speed) for id in range(N_humans)]
     humans[0].infection()
@@ -66,10 +66,13 @@ def main():
         screen.fill((0,0,0))
         # Alle aufgelaufenen Events holen und abarbeiten.
 
-        for person in humans:
-             # normalize = True -> Geschwindigkeit ist konstant
-             # normalize = False -> Geschwindigkeit ist "physikalisch"
+        for id, person in enumerate(humans):
+            # humans_positions[id,0] = person.posx
+            # humans_positions[id,1] = person.posy
+            # normalize = True -> Geschwindigkeit ist konstant
+            # normalize = False -> Geschwindigkeit ist "physikalisch"
             person.collisions(humans, normalize=True)
+            person.check_state()
             person.movement()
             person.render(screen)
 

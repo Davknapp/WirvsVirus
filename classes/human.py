@@ -11,6 +11,7 @@ class human(object):
         limit_x, limit_y = screen.get_size()
         self.id = id
         self.screen = screen
+        self.collisions_active = True
         self.r = r
         self.v = v
         self.posx = random.randint(0,limit_x)
@@ -35,11 +36,12 @@ class human(object):
         self.posy += self.movy
        # screen.blit(self.img, (self.posx, self.posy) )
 
-    def collisions(self, humans, normalize=False):
+    def collisions(self, humans, normalize=True):
         # Collisions mechanics
         for id in range(self.id+1, len(humans)):
             dx = self.posx - humans[id].posx
             dy = self.posy - humans[id].posy
+            if not self.collisions_active: continue
             if (dx**2 + dy**2) < (2*self.r)**2:
                 if normalize:
                     vx, vy = self.v, self.v
@@ -51,6 +53,25 @@ class human(object):
                 self.movy = np.sin(angle)*vy
                 humans[id].movx = -np.cos(angle)*vx
                 humans[id].movy = -np.sin(angle)*vy
+
+                if (humans[id].state == 'infected') and (not self.state == 'infected'):
+                    self.infection()
+                if (self.state == 'infected') and (not humans[id].state == 'infected'):
+                    humans[id].infection()
+
+    def check_state(self):
+        self.model.set_state(self)
+
+        if (self.state == 'dead'):
+            self.collisions_active = False
+
+        colorcode = {'well': (255,255,255),
+                     'infected': (0,255,0),
+                     'recovered': (0,0,255),
+                     'dead': (255,0,0)
+                    }
+
+        self.color = colorcode[self.state]
 
     def infection(self):
         self.infected = True
