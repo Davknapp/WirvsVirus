@@ -54,9 +54,9 @@ class human(object):
                 humans[id].movx = -np.cos(angle)*vx
                 humans[id].movy = -np.sin(angle)*vy
 
-                if (humans[id].state == 'infected') and (not self.state == 'infected'):
+                if (humans[id].state == 'infected' or humans[id].state == 'ill'):# and (self.state != 'infected' and self.state != 'ill'):
                     self.infection()
-                if (self.state == 'infected') and (not humans[id].state == 'infected'):
+                if (self.state == 'infected' or self.state == 'ill'): #and (humans[id].state == 'infected' and humans[id].state == 'ill'):
                     humans[id].infection()
 
     def check_state(self):
@@ -70,14 +70,14 @@ class human(object):
         imgcode = {'well': 'healthy.png',
                    'infected': 'infected.png',
                    'ill': 'infected2.png',
-                   'recovered': 'healthy.png',
-                   'dead': 'infected2.png'
+                   'recovered': 'recovered.png',
+                   'dead': 'dead.png'
                    }
 
         self.img = pygame.transform.scale(get_image(imgcode[self.state]), (20, 20))
 
     def infection(self):
-        if self.state == 'dead' or self.state == 'recovered': return
+        if self.state in ['recovered','ill','dead']: return
         self.state = 'infected'
         self.time_infected = time_now()
 

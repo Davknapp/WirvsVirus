@@ -11,14 +11,14 @@ class Model(object):
                              }
         def set_state(self, human):
 
-            # if (human.state == 'infected'):
-            #     time_diff = time_now() - human.time_infected
-            #     if (time_diff > self.prameter ['incubation_time']):
-            #         if (random() < self.prameter['illness_rate']):
-            #             human.state = 'ill'
+            if (human.state == 'infected'):
+                time_diff = time_now() - human.time_infected
+                if (time_diff > self.prameter ['incubation_time']):
+                    if (random() < self.prameter['illness_rate']):
+                        human.state = 'ill'
 
-            if (human.state == 'infected'): #'ill'):
-                time_diff = time_now() - human.time_infected  #- self.prameter ['incubation_time']
+            if (human.state == 'ill'): #'ill'):
+                time_diff = time_now() - human.time_infected  - self.prameter ['incubation_time']
                 if (time_diff > self.prameter['recover_time']):
                     if (random() < self.prameter['death_rate']):
                         human.state = 'dead'
