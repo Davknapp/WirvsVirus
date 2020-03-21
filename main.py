@@ -22,19 +22,22 @@ if not pygame.mixer: print('Fehler pygame.mixer Modul konnte nicht geladen werde
 
 random.seed()
 
+N_humans = 50
+radius = 10
+speed = 5
+
 def main():
 
     # Initialisieren aller Pygame-Module und
     # Fenster erstellen (wir bekommen eine Surface, die den Bildschirm repräsentiert).
     pygame.init()
-
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
-    human_list = [human(800,600,screen) for i in range(10)]
-    human_list[0].infection()
-    me = player(screen)
-    positions = np.array([(person.posx, person.posy) for person in human_list])
 
+    # Init. humans
+    humans = [human(id, screen, r=radius, v=speed) for id in range(N_humans)]
+    humans[0].infection()
+    me = player(screen)
 
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
@@ -60,11 +63,12 @@ def main():
         screen.fill((0,0,0))
         # Alle aufgelaufenen Events holen und abarbeiten.
 
-        for person in human_list:
-            person.movement(screen)
-
-
-
+        for person in humans:
+             # normalize = True -> Geschwindigkeit ist konstant
+             # normalize = False -> Geschwindigkeit ist "physikalisch"
+            person.collisions(humans, normalize=True)
+            person.movement()
+            person.render()
 
         for event in pygame.event.get():
             # Spiel beenden, wenn wir ein QUIT-Event finden.
