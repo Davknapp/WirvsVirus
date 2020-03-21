@@ -9,6 +9,10 @@ import random
 import numpy as np
 
 
+# Import classes
+
+from classes.human import human
+from classes.player import player
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
 
@@ -17,63 +21,6 @@ if not pygame.font: print('Fehler pygame.font Modul konnte nicht geladen werden!
 if not pygame.mixer: print('Fehler pygame.mixer Modul konnte nicht geladen werden!')
 
 random.seed()
-
-class human(object):
-    #define position of the human,  and the current movement.
-    #draw a cricle representing the human.
-    def __init__(self, limit_x, limit_y,  screen):
-        self.posx = random.randint(0,limit_x)
-        self.posy = random.randint(0,limit_y)
-        self.alpha = random.randint(0,359)
-        self.movx = int(np.cos(self.alpha)*10)
-        self.movy = int(np.sin(self.alpha)*10)
-        self.infected = False
-        self.color=(255,255,255)
-        pygame.draw.circle(screen, self.color, (self.posx, self.posy), 10)
-
-    def movement(self, screen):
-
-        # Boundary reflection
-        limit_x, limit_y = screen.get_size()
-        if (self.posx <= 0) or (self.posx >= limit_x):
-            self.movx *= (-1)
-        if (self.posy <= 0) or (self.posy >= limit_y):
-            self.movy *= (-1)
-
-        self.posx += self.movx
-        self.posy += self.movy
-        pygame.draw.circle(screen, self.color, (self.posx, self.posy), 10)
-
-    def infection(self):
-        self.infected = True
-        self.color = (0,255,0)
-
-
-class player(object):
-    def __init__(self, screen):
-        self.posx = 400
-        self.posy = 300
-        pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
-
-    def handle_input(self, key):
-        # Linke Pfeiltaste wird gedrückt:
-        if key == pygame.K_LEFT:
-            # x-Position der Spielfigur anpassen,
-            self.posx -= 1
-        # Und nochmal für die rechte Pfeiltaste.
-        if key == pygame.K_RIGHT:
-            self.posx += 1
-        if key == pygame.K_UP:
-            self.posy -= 1
-        if key == pygame.K_DOWN:
-            self.posy += 1
-
-    def render(self, screen):
-        pygame.draw.circle(screen, (255,0,0), (self.posx, self.posy), 10)
-
-
-
-
 
 def main():
 
