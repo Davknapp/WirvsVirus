@@ -1,11 +1,13 @@
 import pygame
 import random
 import numpy as np
+from img_lib import get_image
 
 class human(object):
     #define position of the human,  and the current movement.
     #draw a cricle representing the human.
-    def __init__(self, id, screen, v=5, r=10):
+
+    def __init__(self, id, screen,  img,  v=5, r=10):
         limit_x, limit_y = screen.get_size()
         self.id = id
         self.screen = screen
@@ -17,8 +19,9 @@ class human(object):
         self.movx = np.cos(self.alpha)*self.v
         self.movy = np.sin(self.alpha)*self.v
         self.infected = False
-        self.color=(255,255,255)
-        self.render()
+        self.img = img
+        self.render(screen)
+        #screen.blit(self.img, (self.posx, self.posy) )
 
     def movement(self):
         # Boundary reflection
@@ -30,6 +33,7 @@ class human(object):
 
         self.posx += self.movx
         self.posy += self.movy
+       # screen.blit(self.img, (self.posx, self.posy) )
 
     def collisions(self, humans, normalize=False):
         # Collisions mechanics
@@ -50,7 +54,7 @@ class human(object):
 
     def infection(self):
         self.infected = True
-        self.color = (0,255,0)
+        self.img = pygame.transform.scale(get_image('infected2.png'), (20, 20))
 
-    def render(self):
-        pygame.draw.circle(self.screen, self.color, (int(self.posx), int(self.posy)), self.r)
+    def render(self, screen):
+        screen.blit(self.img, (self.posx, self.posy) )

@@ -11,8 +11,9 @@ import numpy as np
 
 # Import classes
 
-from classes.human import human
+from classes.human import human 
 from classes.player import player
+from img_lib import get_image
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
 
@@ -33,11 +34,13 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
-
     # Init. humans
-    humans = [human(id, screen, r=radius, v=speed) for id in range(N_humans)]
+    
+    img = pygame.transform.scale(get_image('healthy.png'), (20, 20))
+    humans = [human(id, screen, img,  r=radius, v=speed) for id in range(N_humans)]
     humans[0].infection()
-    me = player(screen)
+    me_img = pygame.transform.scale(get_image('myself.png'), (20, 20))
+    me = player(screen,  me_img)
 
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
@@ -68,7 +71,7 @@ def main():
              # normalize = False -> Geschwindigkeit ist "physikalisch"
             person.collisions(humans, normalize=True)
             person.movement()
-            person.render()
+            person.render(screen)
 
         for event in pygame.event.get():
             # Spiel beenden, wenn wir ein QUIT-Event finden.
