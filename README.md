@@ -15,3 +15,4 @@ Recommended: Create a virtual environment (e.g. using conda) and install all req
 
 - Every class gets its own file in the classes folder or a subfolder of the classes folder
 - Additional ressources (images, audio, ...) should be put in the res folder
+- Please see the file [Coding guidelines](https://github.com/Davknapp/WirvsVirus/blob/master/CODINGGUIDELINES.md)
