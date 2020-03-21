@@ -1,3 +1,11 @@
+(English version below)
+
+Allgemeine Coding Regeln:
+- Pro Klasse ein eigenes File in classes
+- Jede Funktion kurz kommentieren, was sie macht
+- Allgemein den Code so ausfuehrlich kommentieren, dass andere, die ihn nicht geschrieben haben deine Gedanken nachvollziehen koennen
+
+
 Bitte halte dich an folgenden Workflow:
 
 1. Aufgabe im Googledocs aussuchen und markieren, dass du sie bearbeitest.
@@ -11,6 +19,12 @@ Bitte halte dich an folgenden Workflow:
 Danke sehr fuer deinen Beitrag :)
 
 English version:
+
+
+General Coding rules:
+- One file per class in the classes folder
+- A comment for each function what it does
+- Please comment all your code extensively such that other, that did not code it, can understand what it does
 
 Please stick to the following workflow:
 
