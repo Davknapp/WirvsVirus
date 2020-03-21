@@ -13,6 +13,7 @@ import numpy as np
 
 from classes.human import human 
 from classes.player import player
+from classes.gui import activeGui
 from img_lib import get_image
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
@@ -84,6 +85,7 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
         me.render(screen)
+        activeGui.render(screen)
         pygame.display.update()
         # Inhalt von screen anzeigen.
         pygame.display.flip()

@@ -3,7 +3,7 @@ import random
 import numpy as np
 from img_lib import get_image
 
-from classes.simulation import next_velocity, KEEP_BEHAVIOUR_FOR_MS
+from classes.simulation import SocialDistancingSimulation
 
 class human(object):
     #define position of the human,  and the current movement.
@@ -33,7 +33,7 @@ class human(object):
     def movement(self):
         # Maybe change behaviour
         if pygame.time.get_ticks() > self.next_behaviour_change:
-            v, next_change = next_velocity()
+            v, next_change = SocialDistancingSimulation.next_velocity()
             self.next_behaviour_change += next_change
             self.set_velocity_vector(v, self.alpha)
 
@@ -49,6 +49,7 @@ class human(object):
        # screen.blit(self.img, (self.posx, self.posy) )
 
     def collisions(self, humans, normalize=False):
+
         # Collisions mechanics
         for id in range(self.id+1, len(humans)):
             dx = self.posx - humans[id].posx

@@ -3,33 +3,57 @@
 """
 
 import random
+import pygame
+from classes.gui import activeGui
 
-MAX_VELOCITY = 5
-KEEP_BEHAVIOUR_FOR_MS = 1000
+MIN_VELOCITY = 1
+VELOCITY_SPAN = 5
+KEEP_BEHAVIOUR_FOR_MS = 5000
 
-_social_distancing = 1.
+class SocialDistSimulationClass(object):
 
-def set_social_distancing(value):
-    """ 
-        Sets 'social distancing' to a value between zero and one; zero indicating everyone constantly partying and one meaning (almost) everyone stays at home.
-    """
-    if value < 0 or value > 1:
-        raise ValueError('Value must be between zero and one')
+    def __init__(self):
+        self._social_distancing = 0.3
+        activeGui.set_social_distancing_factor(self._social_distancing)
 
-    _social_distancing = value
+        # Provisional: Set social distancing factor via command line. 
+        # Launch with 'python main.py 0.7' or any value between 0 and 1.
+        try:
+            import sys
+            if len(sys.argv) > 1:
+                self.set_social_distancing(float(sys.argv[1]))
+        except ImportError:
+            pass
 
-def get_social_distancing():
-    return _social_distancing
+
+    def set_social_distancing(self, value):
+        """ 
+            Sets 'social distancing' to a value between zero and one; zero indicating everyone constantly partying and one meaning (almost) everyone stays at home.
+        """
+        if value < 0 or value > 1:
+            raise ValueError('Value must be between zero and one')
+
+        self._social_distancing = value
+        activeGui.set_social_distancing_factor(self._social_distancing)
+
+    def get_social_distancing(self):
+        return self._social_distancing
 
 
-def next_velocity():
-    rand_shift = -0.3 + (random.random() * 0.6)
-    distancing = _social_distancing + rand_shift
-    if distancing < 0:
-        distancing = 0
-    if distancing > 1:
-        distancing = 1
+    def next_velocity(self):
+        rand_shift = -0.3 + (random.random() * 0.6)
+        distancing = self._social_distancing + rand_shift
+        if distancing < 0:
+            distancing = 0
+        if distancing > 1:
+            distancing = 1
 
-    rand_time = 0.5 + random.random()
+        v = 0 if distancing == 1 else MIN_VELOCITY + (1 - distancing) * (VELOCITY_SPAN)
 
-    return int(MAX_VELOCITY * (1-distancing)), int(rand_time * KEEP_BEHAVIOUR_FOR_MS)
+        rand_time = 0.5 + random.random()
+
+        return int(v), int(rand_time * KEEP_BEHAVIOUR_FOR_MS)
+
+
+#   Import this:
+SocialDistancingSimulation = SocialDistSimulationClass()
