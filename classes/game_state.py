@@ -71,14 +71,14 @@ class GameState(AbstractController):
         self._infected_count = value
         if self._infected_count == 0:
             self.end_condition_met_at = pygame.time.get_ticks()
-            self.level_stats.end_reason = 'Das Virus wurde ausgerottet! :)'
+            self.level_stats.end_reason = 'Das Virus wurde ausgerottet!'
 
     def player_died(self):
         """
             Notify the GameState that the player has died and the funeral has to be arranged.
         """
         self.end_condition_met_at = pygame.time.get_ticks()
-        self.level_stats.end_reason = 'Du bist gestorben! :('
+        self.level_stats.end_reason = 'Du bist gestorben!'
 
     def start(self):
         self.start_time = pygame.time.get_ticks()
