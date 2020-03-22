@@ -8,7 +8,7 @@ HUMAN_RADIUS = 10
 HUMAN_INITIAL_SPEED = 5
 
 class GameState:
-    
+
     def __init__(self, screen, model):
         """
             Initializes a game state, along with humans and the player

@@ -44,7 +44,7 @@ class human(object):
         if pygame.time.get_ticks() > self.next_behaviour_change:
             v, next_change = SocialDistancingSimulation.next_velocity()
             self.next_behaviour_change += next_change
-            self.set_velocity_vector(v)
+            self.change_speed(v)
 
         # Boundary reflection
         limit_x, limit_y = self.screen.get_size()
@@ -82,12 +82,12 @@ class human(object):
                 angle = np.arctan2(dy, dx)
                 self.movx = np.cos(angle) * self.v
                 self.movy = np.sin(angle) * self.v
-                humans[id].movx = -np.cos(angle) * humans[id].v
-                humans[id].movy = -np.sin(angle) * humans[id].v
+                other.movx = -np.cos(angle) * other.v
+                other.movy = -np.sin(angle) * other.v
 
-                if (humans[id].state == 'infected' or humans[id].state == 'ill'):# and (self.state != 'infected' and self.state != 'ill'):
+                if (other.state == 'infected' or other.state == 'ill'):
                     self.infection()
-                if (self.state == 'infected' or self.state == 'ill'): #and (humans[id].state == 'infected' and humans[id].state == 'ill'):
+                if (self.state == 'infected' or self.state == 'ill'):
                     humans[id].infection()
 
     def check_state(self):
@@ -111,8 +111,16 @@ class human(object):
         self.state = 'infected'
         self.time_infected = time_now()
 
-    def change_velocity(self):
-        pass
+    def change_speed(self, new_v_magnitude):
+        """
+            Changes this human's speed while maintaining its direction of movement
+        """
+        v_norm = np.sqrt(self.movx**2 + self.movy**2)
+        v_direction_x = self.movx / v_norm
+        v_direction_y = self.movy / v_norm
+
+        self.movx = v_direction_x * new_v_magnitude
+        self.movy = v_direction_y * new_v_magnitude
 
     def render_img(self):
         self.screen.blit(self.img, (self.posx, self.posy) )
