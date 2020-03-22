@@ -38,6 +38,10 @@ class human(AbstractHuman):
         self.movy = np.sin(self.alpha) * v
 
     def movement(self):
+        # The dead can't move!
+        if self.state == 'dead':
+            return
+
         # Maybe change behaviour
         if pygame.time.get_ticks() > self.next_behaviour_change:
             v, next_change = SocialDistancingSimulation.next_velocity()
@@ -57,12 +61,20 @@ class human(AbstractHuman):
 
     def collisions(self, humans, normalize=True):
         # Collisions mechanics
+        # Can't collide with anything when you're six feet under ground.
+        if not self.collisions_active:
+            return
+        
         #for id in range(self.id+1, len(humans)):
         for other in humans[self.id + 1:] + [the_player]:
             dx = self.posx - other.posx
             dy = self.posy - other.posy
-            if not self.collisions_active: continue
             if (dx**2 + dy**2) < (2*self.r)**2:
+                other = humans[id]
+
+                if not other.collisions_active:
+                    continue
+
                 if normalize:
                     vx, vy = self.v, self.v
                 else:
