@@ -37,10 +37,19 @@ class SocialDistSimulationClass(object):
         activeGui.set_social_distancing_factor(self._social_distancing)
 
     def get_social_distancing(self):
+        """
+            Returns the current social distancing factor
+        """
         return self._social_distancing
 
 
     def next_velocity(self):
+        """
+            Called by a human to retrieve the velocity v it should maintain for the next few seconds.
+            The velocity depends on the current rate of social distancing.
+            Returns a tuple (v, time).
+        """
+        #   Randomize the velocity a little around the social distancing factor
         rand_shift = -0.3 + (random.random() * 0.6)
         distancing = self._social_distancing + rand_shift
         if distancing < 0:

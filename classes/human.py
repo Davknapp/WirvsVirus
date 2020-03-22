@@ -66,12 +66,10 @@ class human(object):
                 humans[id].movx = -np.cos(angle)*vx
                 humans[id].movy = -np.sin(angle)*vy
 
+
     def infection(self):
         self.infected = True
         self.img = pygame.transform.scale(get_image('infected2.png'), (20, 20))
-
-    def change_velocity(self):
-        pass
 
     def render(self, screen):
         screen.blit(self.img, (self.posx, self.posy) )
