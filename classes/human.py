@@ -88,13 +88,13 @@ class human(object):
                 if (other.state == 'infected' or other.state == 'ill'):
                     self.infection()
                 if (self.state == 'infected' or self.state == 'ill'):
-                    humans[id].infection()
+                    other.infection()
 
     def check_state(self):
         self.model.set_state(self)
 
         if (self.state == 'dead'):
-            self.set_velocity_vector(0)
+            self.change_speed(0)
             self.collisions_active = False
 
         imgcode = {'well': 'healthy.png',
@@ -111,17 +111,17 @@ class human(object):
         self.state = 'infected'
         self.time_infected = time_now()
 
-    def change_speed(self, new_v_magnitude):
+    def change_speed(self, new_v):
         """
             Changes this human's speed while maintaining its direction of movement
         """
-        v_norm = np.sqrt(self.movx**2 + self.movy**2)
-        if (v_norm != 0):
-            v_direction_x = self.movx / v_norm
-            v_direction_y = self.movy / v_norm
-
-            self.movx = v_direction_x * new_v_magnitude
-            self.movy = v_direction_y * new_v_magnitude
+        if (self.v != 0):
+            angle = np.arctan2(self.movy, self.movx)
+        else:
+            angle = 2*np.pi*np.random.random()
+        self.v = new_v
+        self.movx = new_v * np.cos(angle)
+        self.movx = new_v * np.sin(angle)
 
 
     def render_img(self):
