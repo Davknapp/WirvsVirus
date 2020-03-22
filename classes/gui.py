@@ -1,6 +1,15 @@
 import pygame
 import pygame.font
 
+class GuiInterface(object):
+    def __init__(self, screen):
+        self.screen = screen
+        self.slider = UIElement()
+        self.button = UIElement()
+
+class UIElement(Sprite):
+    def __init__(self):
+        pass
 
 class GuiClass(object):
 

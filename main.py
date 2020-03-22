@@ -6,14 +6,13 @@
 
 import pygame
 import random
-import numpy as np
 
 
 # Import classes
 
 from classes.human import human
 from classes.player import player
-from classes.gui import activeGui
+from classes.gui import activeGui, GuiInterface
 from img_lib import get_image,  background
 from classes.model import Model
 from classes.game_state import initGameState
@@ -36,14 +35,24 @@ def main():
     # Initialisieren aller Pygame-Module und
     # Fenster erstellen (wir bekommen eine Surface, die den Bildschirm repräsentiert).
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    # Das Hauptfenster
+    screen = pygame.display.set_mode((800, 800))
     screen.fill((0, 0, 0))
+    # Surface auf der das Game lauft
+    game_screen = pygame.Surface((800, 600))
+    game_screen.fill((0, 0, 0))
+    # Surface auf der die GUI lebt
+    gui_screen = pygame.Surface((800, 200))
+    gui_screen.fill((255, 255, 255))
 
     back = background('map.png', [0,0])
-    #screen.fill([255, 255, 255])
+
+    # Init. GUI
+    gui = GuiInterface(gui_screen)
+
     # Init. game state
     model = Model()
-    gameState = initGameState(screen, model)
+    gameState = initGameState(game_screen, model)
     me = gameState.the_player
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
@@ -64,9 +73,10 @@ def main():
         # Framerate auf 30 Frames pro Sekunde beschränken.
         # Pygame wartet, falls das Programm schneller läuft.
         clock.tick(30)
-        # screen-Surface mit Schwarz (RGB = 0, 0, 0) füllen.
-        #screen.fill((0,0,0))
-        screen.blit(back.image,back.rect)
+        # Zeichne GUI und Game Surface
+        screen.blit(gui_screen, (0, 0))
+        screen.blit(game_screen, (0, 200))
+        game_screen.blit(back.image,back.rect)
 
         # Update the game state
         gameState.frame_update()
@@ -83,8 +93,8 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
 
-        gameState.frame_render(screen)
-        activeGui.render(screen)
+        gameState.frame_render(game_screen)
+        activeGui.render(game_screen)
 
         pygame.display.update()
         # Inhalt von screen anzeigen.
