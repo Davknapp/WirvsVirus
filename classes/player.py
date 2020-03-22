@@ -10,7 +10,7 @@ class player(AbstractHuman):
         self.posx = 400
         self.posy = 300
         self.screen = screen
-        self.img = pygame.transform.scale(get_image('myself.png'), (20, 20))
+        self.img = pygame.transform.scale(get_image('myself3.png'), (30, 30))
         self.render_img()
         the_player = self
 

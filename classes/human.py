@@ -19,9 +19,9 @@ class human(AbstractHuman):
         self.model = model
         self.collisions_active = True
         self.r = r
-        self.v=v
-        self.posx = random.randint(0,limit_x)
-        self.posy = random.randint(0,limit_y)
+        self.v = v
+        self.posx = random.randint(0,limit_x-2*r)
+        self.posy = random.randint(0,limit_y-2*r)
         self.alpha = random.random()*2*np.pi
         self.movx = np.cos(self.alpha)*self.v
         self.movy = np.sin(self.alpha)*self.v
@@ -34,7 +34,7 @@ class human(AbstractHuman):
 
     def set_velocity_vector(self,  v):
         self.v = v
-        self.movx = np.cos(self.alpha) *v
+        self.movx = np.cos(self.alpha) * v
         self.movy = np.sin(self.alpha) * v
 
     def movement(self):
@@ -46,13 +46,13 @@ class human(AbstractHuman):
         if pygame.time.get_ticks() > self.next_behaviour_change:
             v, next_change = SocialDistancingSimulation.next_velocity()
             self.next_behaviour_change += next_change
-            self.set_velocity_vector(v)
+            self.change_speed(v)
 
         # Boundary reflection
         limit_x, limit_y = self.screen.get_size()
-        if (self.posx <= 0) or (self.posx >= limit_x):
+        if (self.posx <= 0) or (self.posx >= limit_x-2*self.r):
             self.movx *= (-1)
-        if (self.posy <= 0) or (self.posy >= limit_y):
+        if (self.posy <= 0) or (self.posy >= limit_y-2*self.r):
             self.movy *= (-1)
 
         self.posx += self.movx
@@ -81,15 +81,14 @@ class human(AbstractHuman):
                     vx = np.sqrt(self.movx**2 + other.movx**2)
                     vy = np.sqrt(self.movy**2 + other.movy**2)
                 angle = np.arctan2(dy, dx)
-                self.movx = np.cos(angle)*vx
-                self.movy = np.sin(angle)*vy
-                if other != the_player:
-                    other.movx = -np.cos(angle)*vx
-                    other.movy = -np.sin(angle)*vy
+                self.movx = np.cos(angle) * self.v
+                self.movy = np.sin(angle) * self.v
+                other.movx = -np.cos(angle) * other.v
+                other.movy = -np.sin(angle) * other.v
 
-                if (humans[id].state == 'infected' or humans[id].state == 'ill'):# and (self.state != 'infected' and self.state != 'ill'):
+                if (other.state == 'infected' or other.state == 'ill'):
                     self.infection()
-                if (self.state == 'infected' or self.state == 'ill'): #and (humans[id].state == 'infected' and humans[id].state == 'ill'):
+                if (self.state == 'infected' or self.state == 'ill'):
                     humans[id].infection()
 
 
@@ -97,26 +96,33 @@ class human(AbstractHuman):
         self.model.set_state(self)
 
         if (self.state == 'dead'):
-            self.movx = 0
-            self.movy = 0
+            self.set_velocity_vector(0)
             self.collisions_active = False
 
         imgcode = {'well': 'healthy.png',
                    'infected': 'infected.png',
                    'ill': 'infected2.png',
-                   'recovered': 'recovered.png',
-                   'dead': 'dead.png'
+                   'recovered': 'recovered3.png',
+                   'dead': 'dead2.png'
                    }
 
-        self.img = pygame.transform.scale(get_image(imgcode[self.state]), (20, 20))
+        self.img = pygame.transform.scale(get_image(imgcode[self.state]), (2*self.r, 2*self.r))
 
     def infection(self):
         if self.state in ['recovered','ill','dead']: return
         self.state = 'infected'
         self.time_infected = time_now()
 
-    def change_velocity(self):
-        pass
+    def change_speed(self, new_v_magnitude):
+        """
+            Changes this human's speed while maintaining its direction of movement
+        """
+        v_norm = np.sqrt(self.movx**2 + self.movy**2)
+        v_direction_x = self.movx / v_norm
+        v_direction_y = self.movy / v_norm
 
-    def render_img(self, screen):
-        screen.blit(self.img, (self.posx, self.posy) )
+        self.movx = v_direction_x * new_v_magnitude
+        self.movy = v_direction_y * new_v_magnitude
+
+    def render_img(self):
+        self.screen.blit(self.img, (self.posx, self.posy) )

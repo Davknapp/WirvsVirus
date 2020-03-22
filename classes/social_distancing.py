@@ -13,10 +13,10 @@ KEEP_BEHAVIOUR_FOR_MS = 5000
 class SocialDistSimulationClass(object):
 
     def __init__(self):
-        self._social_distancing = 0.3
+        self._social_distancing = 0.5
         activeGui.set_social_distancing_factor(self._social_distancing)
 
-        # Provisional: Set social distancing factor via command line. 
+        # Provisional: Set social distancing factor via command line.
         # Launch with 'python main.py 0.7' or any value between 0 and 1.
         try:
             import sys
@@ -27,7 +27,7 @@ class SocialDistSimulationClass(object):
 
 
     def set_social_distancing(self, value):
-        """ 
+        """
             Sets 'social distancing' to a value between zero and one; zero indicating everyone constantly partying and one meaning (almost) everyone stays at home.
         """
         if value < 0 or value > 1:
