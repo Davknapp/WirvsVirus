@@ -28,7 +28,7 @@ class player(AbstractHuman):
         self.movy = 0
         self.v = 0
 
-        self.imgcode = {'well': 'healthy.png',
+        self.imgcode = {'well': 'myself3.png',
                    'infected': 'myselfInfected.png',
                    'ill': 'myselfSeriouslyInfected.png',
                    'recovered': 'recovered3.png',
