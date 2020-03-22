@@ -8,10 +8,11 @@ BASE_VELOCITY = 4
 
 class player(AbstractHuman):
 
-    def __init__(self, screen, model):
+    def __init__(self, game_state, screen, model):
 
         super(AbstractHuman, self).__init__()
         
+        self.game_state = game_state
         self.posx = 400
         self.posy = 300
         self.screen = screen
@@ -21,6 +22,7 @@ class player(AbstractHuman):
         self.collisions_active = True
         self.state = 'well'
         self.time_infected = None
+        self.infector = None
         # Set velocity
         self.current_velocity = BASE_VELOCITY
 
@@ -36,6 +38,7 @@ class player(AbstractHuman):
                    'recovered': 'recovered3.png',
                    'dead': 'myselfDead.png'
                    }
+        self.update_image()
 
     def handle_input(self, key):
         # linke Pfeiltaste wird gedrueckt

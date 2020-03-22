@@ -13,7 +13,6 @@ import numpy as np
 
 from classes.human import human
 from classes.player import player
-from img_lib import get_image,  background
 from classes.model import Model
 from classes.game_state import GameState
 from classes.gui_state import GUIState
@@ -40,10 +39,11 @@ def main():
     # Initialisieren aller Pygame-Module und
     # Fenster erstellen (wir bekommen eine Surface, die den Bildschirm repräsentiert).
     pygame.init()
+    pygame.font.init()
+
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
 
-    back = background('map.png', [0,0])
     #screen.fill([255, 255, 255])
     # Init. game state
     model = Model()
@@ -75,7 +75,6 @@ def main():
         clock.tick(30)
         # screen-Surface mit Schwarz (RGB = 0, 0, 0) füllen.
         #screen.fill((0,0,0))
-        screen.blit(back.image,back.rect)
 
         # Update controller
         if AppInstance.next_controller is not None:
