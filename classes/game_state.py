@@ -15,7 +15,7 @@ N_HUMANS = 100
 HUMAN_RADIUS = 10
 HUMAN_INITIAL_SPEED = 5
 
-ENDGAME_DELAY = 5000    # 5 seconds
+ENDGAME_DELAY = 3000    # 5 seconds
 
 class GameState(AbstractController):
 
