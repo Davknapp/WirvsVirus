@@ -87,8 +87,8 @@ class human(object):
         imgcode = {'well': 'healthy.png',
                    'infected': 'infected.png',
                    'ill': 'infected2.png',
-                   'recovered': 'recovered.png',
-                   'dead': 'dead.png'
+                   'recovered': 'recovered3.png',
+                   'dead': 'dead2.png'
                    }
 
         self.img = pygame.transform.scale(get_image(imgcode[self.state]), (20, 20))
