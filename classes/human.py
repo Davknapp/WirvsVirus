@@ -57,7 +57,7 @@ class human(object):
         self.posy += self.movy
 
 
-    def collisions(self, humans, normalize=True):
+    def collisions(self, humans):
         # Collisions mechanics
 
         # Can't collide with anything when you're six feet under ground.
@@ -74,11 +74,6 @@ class human(object):
                 if not other.collisions_active:
                     continue
 
-                if normalize:
-                    vx, vy = self.v, self.v
-                else:
-                    vx = np.sqrt(self.movx**2 + other.movx**2)
-                    vy = np.sqrt(self.movy**2 + other.movy**2)
                 angle = np.arctan2(dy, dx)
                 self.movx = np.cos(angle) * self.v
                 self.movy = np.sin(angle) * self.v
@@ -88,13 +83,13 @@ class human(object):
                 if (other.state == 'infected' or other.state == 'ill'):
                     self.infection()
                 if (self.state == 'infected' or self.state == 'ill'):
-                    humans[id].infection()
+                    other.infection()
 
     def check_state(self):
         self.model.set_state(self)
 
         if (self.state == 'dead'):
-            self.set_velocity_vector(0)
+            self.change_speed(0)
             self.collisions_active = False
 
         imgcode = {'well': 'healthy.png',
@@ -111,16 +106,18 @@ class human(object):
         self.state = 'infected'
         self.time_infected = time_now()
 
-    def change_speed(self, new_v_magnitude):
+    def change_speed(self, new_v):
         """
             Changes this human's speed while maintaining its direction of movement
         """
-        v_norm = np.sqrt(self.movx**2 + self.movy**2)
-        v_direction_x = self.movx / v_norm
-        v_direction_y = self.movy / v_norm
+        if (self.v != 0):
+            angle = np.arctan2(self.movy, self.movx)
+        else:
+            angle = 2*np.pi*np.random.random()
+        self.v = new_v
+        self.movx = new_v * np.cos(angle)
+        self.movx = new_v * np.sin(angle)
 
-        self.movx = v_direction_x * new_v_magnitude
-        self.movy = v_direction_y * new_v_magnitude
 
     def render_img(self):
         self.screen.blit(self.img, (self.posx, self.posy) )
