@@ -26,20 +26,31 @@ class AbstractHuman(object):
         """
         self.model.set_state(self)
 
-        if (self.state == 'dead'):
+        if self.state == 'dead':
             self.change_speed(0)
             self.collisions_active = False
+            self.game_state.level_stats.died += 1
+            if self.infector == self.game_state.player:
+                self.game_state.level_stats.killed_by_player += 1
+
+        if self.state == 'recovered':
+            self.game_state.level_stats.recovered += 1
 
         self.img = pygame.transform.scale(get_image(self.imgcode[self.state]), (2*self.r, 2*self.r))
 
-    def infection(self):
+    def infection(self, infector):
         """
-            Infects this human with the virus.
+            Infects this human with the virus. Also, tracks the person who infected this human.
         """
         if self.state in ['recovered','ill','dead']: 
             return
         self.state = 'infected'
         self.time_infected = time_now()
+        self.infector = infector
+        self.game_state.level_stats.infected += 1
+        if self.infector == self.game_state.player:
+            self.game_state.level_stats.infected_by_player += 1
+
 
     def render_img(self):
         """

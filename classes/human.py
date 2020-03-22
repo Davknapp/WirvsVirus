@@ -40,6 +40,7 @@ class human(AbstractHuman):
         self.collisions_active = True
         self.state = 'well'
         self.time_infected = None
+        self.infector = None
 
 
     def set_velocity_vector(self,  v):
@@ -93,9 +94,9 @@ class human(AbstractHuman):
                     other.movy = -np.sin(angle) * other.v
 
                 if (other.state == 'infected' or other.state == 'ill'):
-                    self.infection()
+                    self.infection(other)
                 if (self.state == 'infected' or self.state == 'ill'):
-                    other.infection()
+                    other.infection(self)
 
     #   check_state was migrated to AbstractHuman
 

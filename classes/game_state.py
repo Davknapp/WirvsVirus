@@ -5,6 +5,7 @@ from classes.human import human
 from classes.player import player
 from classes.game_gui import GameGui
 from classes.social_distancing import SocialDistancing
+from classes.level_stats import LevelStats
 
 from classes.app_instance import AppInstance
 
@@ -21,9 +22,10 @@ class GameState(AbstractController):
         self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(N_HUMANS)]
         self.humans[0].infection()
         self.dead_humans = []
-        self.the_player = player(screen, model)
+        self.the_player = player(self, screen, model)
         self.game_gui = GameGui()
         self.social_distancing = SocialDistancing(self)
+        self.level_stats = LevelStats()
 
     def start(self):
         pass
