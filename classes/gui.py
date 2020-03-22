@@ -17,6 +17,7 @@ class GuiClass(object):
     def set_social_distancing_factor(self, value):
         self.social_distancing_text = "Social Distancing: {}%".format(int(100 * value))
 
+    #write text on screen
     def render_social_distancing_text(self, screen):
         surface = self.default_font.render(self.social_distancing_text, True, pygame.Color(255,255,255))
         position = ( 0, self.default_font.size(self.social_distancing_text)[1] )
