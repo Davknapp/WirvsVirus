@@ -53,7 +53,6 @@ class AbstractHuman(object):
         """
             Infects this human with the virus. Also, tracks the person who infected this human.
         """
-        # debug
         if self.state in ['infected','recovered','ill','dead']: 
             return
         self.state = 'infected'
