@@ -57,7 +57,7 @@ class human(object):
         self.posy += self.movy
 
 
-    def collisions(self, humans, normalize=True):
+    def collisions(self, humans):
         # Collisions mechanics
 
         # Can't collide with anything when you're six feet under ground.
@@ -74,11 +74,6 @@ class human(object):
                 if not other.collisions_active:
                     continue
 
-                if normalize:
-                    vx, vy = self.v, self.v
-                else:
-                    vx = np.sqrt(self.movx**2 + other.movx**2)
-                    vy = np.sqrt(self.movy**2 + other.movy**2)
                 angle = np.arctan2(dy, dx)
                 self.movx = np.cos(angle) * self.v
                 self.movy = np.sin(angle) * self.v
