@@ -13,7 +13,7 @@ KEEP_BEHAVIOUR_FOR_MS = 5000
 class SocialDistSimulationClass(object):
 
     def __init__(self):
-        self._social_distancing = 0.3
+        self._social_distancing = 0.5
         activeGui.set_social_distancing_factor(self._social_distancing)
 
         # Provisional: Set social distancing factor via command line.
