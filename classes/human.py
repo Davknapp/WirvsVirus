@@ -119,9 +119,9 @@ class human(object):
         v_norm = np.sqrt(self.movx**2 + self.movy**2)
         v_direction_x = self.movx / v_norm
         v_direction_y = self.movy / v_norm
-        
+
         self.movx = v_direction_x * new_v_magnitude
         self.movy = v_direction_y * new_v_magnitude
 
-    def render_img(self, screen):
+    def render_img(self):
         screen.blit(self.img, (self.posx, self.posy) )
