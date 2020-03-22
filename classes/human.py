@@ -32,7 +32,7 @@ class human(object):
         self.group = []
         self.leader = -1
 
-    #Group leaders lead the direction of up to five people
+    #Group leaders lead the group of up to five people
     def become_leader(self):
         self.group_leader = True
         self.member = True
@@ -50,6 +50,7 @@ class human(object):
         self.posx += self.movx
         self.posy += self.movy
 
+    #Group leader defines the direction
     def group_movement(self,humans):
         if (self.group_leader == False):
             return
@@ -75,6 +76,7 @@ class human(object):
                 self.movy = np.sin(angle)*vy
                 humans[id].movx = -np.cos(angle)*vx
                 humans[id].movy = -np.sin(angle)*vy
+                #Let the group move in the same direction
                 if( self.group_leader == True ):
                     self.group_movement(humans)
                 if(humans[id].group_leader == True):
@@ -89,6 +91,7 @@ class human(object):
                 if (self.state == 'infected' or self.state == 'ill'): #and (humans[id].state == 'infected' and humans[id].state == 'ill'):
                     humans[id].infection()
             #if (dx**2 + dy**2) < (20**2):
+                #Form groups
                 if(self.group_leader == True and len(self.group) < group_size and humans[id].member == False):
                     humans[id].movx = self.movx
                     humans[id].movy = self.movy
