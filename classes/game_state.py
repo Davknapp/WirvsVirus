@@ -1,5 +1,3 @@
-import pygame
-
 from classes.human import human
 from classes.player import player
 

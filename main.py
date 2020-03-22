@@ -6,15 +6,10 @@
 
 import pygame
 import random
-import numpy as np
-
 
 # Import classes
-
-from classes.human import human
-from classes.player import player
 from classes.gui import activeGui
-from img_lib import get_image,  background
+from img_lib import background
 from classes.model import Model
 from classes.game_state import initGameState
 
