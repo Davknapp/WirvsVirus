@@ -2,6 +2,7 @@ import pygame
 
 from classes.abstract_controller import AbstractController
 from classes.gui import Slider
+from classes.game_state import GameState
 
 from classes.app_instance import AppInstance
 
@@ -11,18 +12,25 @@ HUMAN_INITIAL_SPEED = 5
 
 class GUIState(AbstractController):
 
-    def __init__(self, screen):
+    def __init__(self, screen, model):
         """
             Initializes GUI
         """
+        self.screen = screen
+        self.model = model
         self.buttons = []
         self.sliders = [Slider(screen, (10,10))]
+
+        screen.fill((255, 255, 255))
 
     def start(self):
         pass
 
     def finish(self):
-        pass
+        '''
+            Save Parameters
+        '''
+
 
     def frame_update(self):
         """
@@ -39,7 +47,7 @@ class GUIState(AbstractController):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Slider
                 for s in self.sliders:
-                    if s.rect.collidepoint(mouse_position):
+                    if s.rect.collidepoint(pygame.mouse.get_pos()):
                         s.hit = True
                 # Buttons
                 for b in self.buttons:
@@ -51,6 +59,12 @@ class GUIState(AbstractController):
                 for b in self.buttons:
                     pass
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    self.model.social_distancing  = self.sliders[0].value
+                    gameState = GameState(self.screen, self.model)
+                    AppInstance.set_next_controller(gameState)
+
 
         #   Update Sliders
         for s in self.sliders:
@@ -61,8 +75,10 @@ class GUIState(AbstractController):
         """
             Renders all GUI elements
         """
+        screen.fill((255, 255, 255))
+
         #   Render Sliders and Buttons
         for s in self.sliders:
-            s.update()
+            s.draw()
         for b in self.buttons:
-            b.update()
+            b.draw()

@@ -9,6 +9,7 @@ class Model(object):
                              'survival_time': 2000,
                              'recover_time': 5000,
                              }
+            self.social_distancing = 0.5
         def set_state(self, human):
 
             if (human.state == 'infected'):

@@ -23,7 +23,8 @@ class GameState(AbstractController):
         self.dead_humans = []
         self.the_player = player(screen, model)
         self.game_gui = GameGui()
-        self.social_distancing = SocialDistancing(self)
+        print(model.social_distancing)
+        self.social_distancing = SocialDistancing(self, model.social_distancing)
 
     def start(self):
         pass
@@ -80,4 +81,3 @@ class GameState(AbstractController):
         #   Render the player last, at the highest layer
         self.the_player.render_img()
         self.game_gui.render(screen)
-

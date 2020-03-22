@@ -15,17 +15,13 @@ class Slider(object):
 
         self.hit = False
         self.value = 0
-        self.range = [0, 100]
+        self.range = [0, 1]
         self.radius = 10
         self.color_c1 = (50, 50, 50)
         self.color_c2 = (150, 150, 150)
         self.color_bar = (0, 0, 0)
         self.rec = None
         self.name = 'Slider'
-
-        font = pygame.font.SysFont("Verdana", 12)
-        self.txt_surf = font.render(self.name, 1, BLACK)
-        self.txt_rect = self.txt_surf.get_rect(center=(50, 15))
 
         # Static
         self.surface.fill((255, 255, 255))
@@ -48,7 +44,6 @@ class Slider(object):
                 self.value = self.range[-1]
             if (self.value < self.range[0]):
                 self.value = self.range[0]
-        self.draw()
 
     def draw(self):
 
