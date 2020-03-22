@@ -23,6 +23,7 @@ class GuiClass(object):
         """
         self.social_distancing_text = "Social Distancing: {}%".format(int(100 * value))
 
+    #write text on screen
     def render_social_distancing_text(self, screen):
         """
             Render current social distancing factor to screen
