@@ -17,9 +17,9 @@ class human(object):
         self.model = model
         self.collisions_active = True
         self.r = r
-        self.v=v
-        self.posx = random.randint(0,limit_x)
-        self.posy = random.randint(0,limit_y)
+        self.v = v
+        self.posx = random.randint(0,limit_x-2*r)
+        self.posy = random.randint(0,limit_y-2*r)
         self.alpha = random.random()*2*np.pi
         self.movx = np.cos(self.alpha)*self.v
         self.movy = np.sin(self.alpha)*self.v
@@ -32,7 +32,7 @@ class human(object):
 
     def set_velocity_vector(self,  v):
         self.v = v
-        self.movx = np.cos(self.alpha) *v
+        self.movx = np.cos(self.alpha) * v
         self.movy = np.sin(self.alpha) * v
 
     def movement(self):
@@ -44,9 +44,9 @@ class human(object):
 
         # Boundary reflection
         limit_x, limit_y = self.screen.get_size()
-        if (self.posx <= 0) or (self.posx >= limit_x):
+        if (self.posx <= 0) or (self.posx >= limit_x-2*self.r):
             self.movx *= (-1)
-        if (self.posy <= 0) or (self.posy >= limit_y):
+        if (self.posy <= 0) or (self.posy >= limit_y-2*self.r):
             self.movy *= (-1)
 
         self.posx += self.movx
@@ -66,10 +66,10 @@ class human(object):
                     vx = np.sqrt(self.movx**2 + humans[id].movx**2)
                     vy = np.sqrt(self.movy**2 + humans[id].movy**2)
                 angle = np.arctan2(dy, dx)
-                self.movx = np.cos(angle)*vx
-                self.movy = np.sin(angle)*vy
-                humans[id].movx = -np.cos(angle)*vx
-                humans[id].movy = -np.sin(angle)*vy
+                self.movx = np.cos(angle) * self.v
+                self.movy = np.sin(angle) * self.v
+                humans[id].movx = -np.cos(angle) * humans[id].v
+                humans[id].movy = -np.sin(angle) * humans[id].v
 
                 if (humans[id].state == 'infected' or humans[id].state == 'ill'):# and (self.state != 'infected' and self.state != 'ill'):
                     self.infection()
@@ -80,8 +80,7 @@ class human(object):
         self.model.set_state(self)
 
         if (self.state == 'dead'):
-            self.movx = 0
-            self.movy = 0
+            self.set_velocity_vector(0)
             self.collisions_active = False
 
         imgcode = {'well': 'healthy.png',
@@ -91,7 +90,7 @@ class human(object):
                    'dead': 'dead.png'
                    }
 
-        self.img = pygame.transform.scale(get_image(imgcode[self.state]), (20, 20))
+        self.img = pygame.transform.scale(get_image(imgcode[self.state]), (2*self.r, 2*self.r))
 
     def infection(self):
         if self.state in ['recovered','ill','dead']: return
@@ -101,5 +100,5 @@ class human(object):
     def change_velocity(self):
         pass
 
-    def render_img(self, screen):
-        screen.blit(self.img, (self.posx, self.posy) )
+    def render_img(self):
+        self.screen.blit(self.img, (self.posx, self.posy) )

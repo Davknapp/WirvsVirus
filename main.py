@@ -26,7 +26,7 @@ if not pygame.mixer: print('Fehler pygame.mixer Modul konnte nicht geladen werde
 
 random.seed()
 
-N_humans = 100
+N_humans = 50
 radius = 10
 speed = 5
 
@@ -75,10 +75,10 @@ def main():
         for id, person in enumerate(humans):
             # normalize = True -> Geschwindigkeit ist konstant
             # normalize = False -> Geschwindigkeit ist "physikalisch"
-            person.collisions(humans, normalize=True)
+            person.collisions(humans)
             person.check_state()
             person.movement()
-            person.render_img(screen)
+            person.render_img()
 
         for event in pygame.event.get():
             # Spiel beenden, wenn wir ein QUIT-Event finden.
