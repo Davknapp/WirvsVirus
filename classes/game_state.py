@@ -18,12 +18,11 @@ class GameState(AbstractController):
         """
             Initializes a game state, along with humans and the player
         """
-        self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(N_HUMANS)]
+        self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(model.N_humans)]
         self.humans[0].infection()
         self.dead_humans = []
         self.the_player = player(screen, model)
         self.game_gui = GameGui()
-        print(model.social_distancing)
         self.social_distancing = SocialDistancing(self, model.social_distancing)
 
     def start(self):
