@@ -26,7 +26,7 @@ class GameState:
         for id, person in enumerate(self.humans):
             # normalize = True -> Geschwindigkeit ist konstant
             # normalize = False -> Geschwindigkeit ist "physikalisch"
-            person.collisions(self.humans, normalize=True)
+            person.collisions(self.humans)
             person.check_state()
             if person.state == 'dead':
                 deceased.append(person)
@@ -43,11 +43,11 @@ class GameState:
         """
         #   First, render the dead
         for h in self.dead_humans:
-            h.render_img(screen)
+            h.render_img()
 
         #   Then, render the living
         for h in self.humans:
-            h.render_img(screen)
+            h.render_img()
 
         #   Render the player last, at the highest layer
         self.the_player.render_img()
