@@ -12,6 +12,7 @@ from classes.gui import activeGui
 from img_lib import background
 from classes.model import Model
 from classes.game_state import initGameState
+from classes.button import UIElement,  WHITE,  BLUE
 
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
@@ -33,6 +34,14 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     screen.fill((0, 0, 0))
+    # create a ui element
+    uielement = UIElement(
+        center_position=(400, 400),
+        font_size=30,
+        bg_rgb=BLUE,
+        text_rgb=WHITE,
+        text="Hello World",
+    )
 
     back = background('map.png', [0,0])
     #screen.fill([255, 255, 255])
@@ -56,6 +65,14 @@ def main():
     # Die Schleife, und damit unser Spiel, läuft solange running == True.
     running = True
     while running:
+        for event in pygame.event.get():
+            pass
+        screen.fill(BLUE)
+
+        uielement.update(pygame.mouse.get_pos())
+        uielement.draw(screen)
+        pygame.display.flip()
+
         # Framerate auf 30 Frames pro Sekunde beschränken.
         # Pygame wartet, falls das Programm schneller läuft.
         clock.tick(30)
