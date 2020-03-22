@@ -16,6 +16,7 @@ from classes.player import player
 from classes.gui import activeGui
 from img_lib import get_image,  background
 from classes.model import Model
+from classes.game_state import initGameState
 
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
@@ -40,13 +41,10 @@ def main():
 
     back = background('map.png', [0,0])
     #screen.fill([255, 255, 255])
-    # Init. humans
+    # Init. game state
     model = Model()
-    humans = [human(id, screen, model,  v=speed,  r=radius) for id in range(N_humans)]
-    humans[0].infection()
-    #me_img = pygame.transform.scale(get_image('myself.png'), (20, 20))
-    me = player(screen)
-
+    gameState = initGameState(screen, model)
+    me = gameState.the_player
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
 
@@ -55,7 +53,6 @@ def main():
     pygame.mouse.set_visible(1)
 
     pygame.key.set_repeat(1, 30)
-
 
     pygame.display.update()
 
@@ -70,16 +67,11 @@ def main():
         # screen-Surface mit Schwarz (RGB = 0, 0, 0) füllen.
         #screen.fill((0,0,0))
         screen.blit(back.image,back.rect)
+
+        # Update the game state
+        gameState.frame_update()
+
         # Alle aufgelaufenen Events holen und abarbeiten.
-
-        for id, person in enumerate(humans):
-            # normalize = True -> Geschwindigkeit ist konstant
-            # normalize = False -> Geschwindigkeit ist "physikalisch"
-            person.collisions(humans)
-            person.check_state()
-            person.movement()
-            person.render_img()
-
         for event in pygame.event.get():
             # Spiel beenden, wenn wir ein QUIT-Event finden.
             if event.type == pygame.QUIT:
@@ -91,7 +83,7 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
 
-        me.render_img()
+        gameState.frame_render(screen)
         activeGui.render(screen)
 
         pygame.display.update()

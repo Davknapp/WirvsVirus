@@ -82,12 +82,12 @@ class human(object):
                 angle = np.arctan2(dy, dx)
                 self.movx = np.cos(angle) * self.v
                 self.movy = np.sin(angle) * self.v
-                humans[id].movx = -np.cos(angle) * humans[id].v
-                humans[id].movy = -np.sin(angle) * humans[id].v
+                other.movx = -np.cos(angle) * other.v
+                other.movy = -np.sin(angle) * other.v
 
-                if (humans[id].state == 'infected' or humans[id].state == 'ill'):# and (self.state != 'infected' and self.state != 'ill'):
+                if (other.state == 'infected' or other.state == 'ill'):
                     self.infection()
-                if (self.state == 'infected' or self.state == 'ill'): #and (humans[id].state == 'infected' and humans[id].state == 'ill'):
+                if (self.state == 'infected' or self.state == 'ill'):
                     humans[id].infection()
 
     def check_state(self):
