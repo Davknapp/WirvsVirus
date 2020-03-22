@@ -15,7 +15,7 @@ from classes.human import human
 from classes.player import player
 from img_lib import get_image,  background
 from classes.model import Model
-from classes.game_state import initGameState
+from classes.game_state import GameState
 from classes.abstract_controller import AbstractController
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
@@ -46,7 +46,7 @@ def main():
     #screen.fill([255, 255, 255])
     # Init. game state
     model = Model()
-    gameState = initGameState(screen, model)
+    gameState = GameState(screen, model)
 
     #   Set gameState as first controller to be run
     AppInstance.set_next_controller(gameState)

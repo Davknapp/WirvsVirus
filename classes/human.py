@@ -4,7 +4,6 @@ import numpy as np
 from img_lib import get_image
 from pygame.time import get_ticks as time_now
 
-from classes.social_distancing import SocialDistancingSimulation
 from classes.abstract_human import AbstractHuman
 
 class human(AbstractHuman):

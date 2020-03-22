@@ -81,13 +81,3 @@ class GameState(AbstractController):
         self.the_player.render_img()
         self.game_gui.render(screen)
 
-#   Import these:
-
-def initGameState(screen, model):
-    """
-        Creates and returns the game state singleton.
-    """
-    activeGameState = GameState(screen, model)
-    return activeGameState
-
-activeGameState = None
