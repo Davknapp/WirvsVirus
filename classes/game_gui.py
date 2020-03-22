@@ -2,11 +2,11 @@ import pygame
 import pygame.font
 
 
-class GuiClass(object):
+class GameGui(object):
 
     def __init__(self):
         """
-            Initialize GUI
+            Initialize this GUI
         """
 
         # private attributes
@@ -38,5 +38,3 @@ class GuiClass(object):
         """
         self.render_social_distancing_text(screen)
 
-# Import this
-activeGui = GuiClass()

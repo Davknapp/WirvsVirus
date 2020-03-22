@@ -4,17 +4,17 @@ import numpy as np
 from img_lib import get_image
 from pygame.time import get_ticks as time_now
 
-from classes.social_distancing import SocialDistancingSimulation
 from classes.abstract_human import AbstractHuman
 
 class human(AbstractHuman):
     #define position of the human,  and the current movement.
     #draw a cricle representing the human.
 
-    def __init__(self, id, screen, model, v=5, r=10):
+    def __init__(self, game_state, id, screen, model, v=5, r=10):
 
         super(AbstractHuman, self).__init__()
 
+        self.game_state = game_state
         limit_x, limit_y = screen.get_size()
         self.id = id
         self.screen = screen
@@ -54,7 +54,7 @@ class human(AbstractHuman):
 
         # Maybe change behaviour
         if pygame.time.get_ticks() > self.next_behaviour_change:
-            v, next_change = SocialDistancingSimulation.next_velocity()
+            v, next_change = self.game_state.social_distancing.next_velocity()
             self.next_behaviour_change += next_change
             self.change_speed(v)
 
