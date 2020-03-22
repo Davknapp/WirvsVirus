@@ -23,7 +23,26 @@ class GameState(AbstractController):
         """
             Initializes a game state, along with humans and the player
         """
-        self.level_stats = LevelStats()
+        stat_names = [
+            'infected_total',
+            'infected_by_player',
+            'died',
+            'killed_by_player',
+            'recovered',
+            'level_time'
+        ]
+
+        stat_texts = {
+            'infected_total'        : 'Anzahl Infizierte:',
+            'infected_by_player'    : 'Durch dich Infiziert:',
+            'died'                  : 'Gestorben:',
+            'killed_by_player'      : 'Durch deine Infektion gestorben:',
+            'recovered'             : 'Vom Virus erholt:',
+            'level_time'            : 'Vergangene Zeit:'
+        }
+
+        self.level_stats = LevelStats(stat_names, stat_texts)
+
         self.the_player = player(self, screen, model)
         self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(N_HUMANS)]
         self.dead_humans = []
@@ -52,7 +71,7 @@ class GameState(AbstractController):
         self._infected_count = value
         if self._infected_count == 0:
             self.end_condition_met_at = pygame.time.get_ticks()
-            self.level_stats.end_reason = 'Covid-19 wurde ausgerottet! :)'
+            self.level_stats.end_reason = 'Das Virus wurde ausgerottet! :)'
 
     def player_died(self):
         """
@@ -131,7 +150,8 @@ class GameState(AbstractController):
         """
             Wraps things up after the level is completed.
         """
-        self.level_stats.level_time_ms = self.end_condition_met_at - self.start_time
+        level_time_ms = self.end_condition_met_at - self.start_time
+        self.level_stats.set_value('level_time', str(level_time_ms // 1000) + ' Sekunden')
         results_view = ResultsView(self.level_stats)
 
         AppInstance.set_next_controller(results_view)

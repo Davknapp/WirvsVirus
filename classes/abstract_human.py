@@ -34,15 +34,15 @@ class AbstractHuman(object):
             if self.state == 'dead':
                 self.change_speed(0)
                 self.collisions_active = False
-                self.game_state.level_stats.died += 1
+                self.game_state.level_stats.increment('died')
                 if self.infector == self.game_state.the_player:
-                    self.game_state.level_stats.killed_by_player += 1
+                    self.game_state.level_stats.increment('killed_by_player')
                 self.game_state.infected_count -= 1
                 if self == self.game_state.the_player:
                     self.game_state.player_died()
 
             if self.state == 'recovered':
-                self.game_state.level_stats.recovered += 1
+                self.game_state.level_stats.increment('recovered')
                 self.game_state.infected_count -= 1
 
 
@@ -53,14 +53,15 @@ class AbstractHuman(object):
         """
             Infects this human with the virus. Also, tracks the person who infected this human.
         """
+        # debug
         if self.state in ['infected','recovered','ill','dead']: 
             return
         self.state = 'infected'
         self.time_infected = time_now()
         self.infector = infector
-        self.game_state.level_stats.infected_total += 1
+        self.game_state.level_stats.increment('infected_total')
         if self.infector == self.game_state.the_player:
-            self.game_state.level_stats.infected_by_player += 1
+            self.game_state.level_stats.increment('infected_by_player')
         self.game_state.infected_count += 1
         self.update_image()
 
