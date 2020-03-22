@@ -12,7 +12,7 @@ import random
 
 from classes.human import human
 from classes.player import player
-from classes.gui import activeGui, GuiInterface
+from classes.gui import activeGui, UInterface
 from img_lib import get_image,  background
 from classes.model import Model
 from classes.game_state import initGameState
@@ -48,7 +48,7 @@ def main():
     back = background('map.png', [0,0])
 
     # Init. GUI
-    gui = GuiInterface(gui_screen)
+    gui = UInterface(gui_screen)
 
     # Init. game state
     model = Model()
