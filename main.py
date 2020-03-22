@@ -27,7 +27,7 @@ if not pygame.mixer: print('Fehler pygame.mixer Modul konnte nicht geladen werde
 
 random.seed()
 
-N_humans = 100
+N_humans = 50
 radius = 10
 speed = 5
 
