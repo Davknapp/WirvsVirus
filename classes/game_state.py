@@ -16,12 +16,15 @@ class GameState:
         self.humans = [human(id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(N_HUMANS)]
         self.humans[0].infection()
         self.dead_humans = []
-        self.the_player = player(screen)
+        self.the_player = player(screen, model)
 
     def frame_update(self):
         """
             Runs a single frame update. Moves, collides and updates sickness state of all humans.
         """
+        self.the_player.check_state()
+        #self.the_player.movement()
+
         deceased = []
         for id, person in enumerate(self.humans):
             # normalize = True -> Geschwindigkeit ist konstant

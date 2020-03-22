@@ -29,10 +29,17 @@ class human(AbstractHuman):
         self.img = None
         self.set_velocity_vector(self.v)
         self.next_behaviour_change = 0
-        #   These member initializations have been moved to the AbstractHuman super class
-        #self.collisions_active = True
-        #self.state = 'well'
-        #self.time_infected = None
+
+        self.imgcode = {'well': 'healthy.png',
+                   'infected': 'infected.png',
+                   'ill': 'infected2.png',
+                   'recovered': 'recovered3.png',
+                   'dead': 'dead2.png'
+                   }
+        
+        self.collisions_active = True
+        self.state = 'well'
+        self.time_infected = None
 
 
     def set_velocity_vector(self,  v):
@@ -72,8 +79,7 @@ class human(AbstractHuman):
         for other in humans[self.id + 1:] + [player]:
             dx = self.posx - other.posx
             dy = self.posy - other.posy
-            if (dx**2 + dy**2) < (2*self.r)**2:
-                other = humans[id]
+            if (dx**2 + dy**2) < (self.r + other.r)**2:
 
                 if not other.collisions_active:
                     continue
@@ -91,26 +97,9 @@ class human(AbstractHuman):
                 if (self.state == 'infected' or self.state == 'ill'):
                     other.infection()
 
-    def check_state(self):
-        self.model.set_state(self)
+    #   check_state was migrated to AbstractHuman
 
-        if (self.state == 'dead'):
-            self.change_speed(0)
-            self.collisions_active = False
-
-        imgcode = {'well': 'healthy.png',
-                   'infected': 'infected.png',
-                   'ill': 'infected2.png',
-                   'recovered': 'recovered3.png',
-                   'dead': 'dead2.png'
-                   }
-
-        self.img = pygame.transform.scale(get_image(imgcode[self.state]), (2*self.r, 2*self.r))
-
-    def infection(self):
-        if self.state in ['recovered','ill','dead']: return
-        self.state = 'infected'
-        self.time_infected = time_now()
+    #   infection was migrated to AbstractHuman
 
     def change_speed(self, new_v):
         """
@@ -124,6 +113,4 @@ class human(AbstractHuman):
         self.movx = new_v * np.cos(angle)
         self.movx = new_v * np.sin(angle)
 
-
-    def render_img(self):
-        self.screen.blit(self.img, (self.posx, self.posy) )
+    # render_img was migrated to AbstractHuman
