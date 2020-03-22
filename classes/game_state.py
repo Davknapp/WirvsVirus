@@ -26,7 +26,7 @@ class GameState:
         for id, person in enumerate(self.humans):
             # normalize = True -> Geschwindigkeit ist konstant
             # normalize = False -> Geschwindigkeit ist "physikalisch"
-            person.collisions(self.humans, normalize=True)
+            person.collisions(self.humans)
             person.check_state()
             if person.state == 'dead':
                 deceased.append(person)
