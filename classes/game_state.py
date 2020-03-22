@@ -8,7 +8,7 @@ HUMAN_RADIUS = 10
 HUMAN_INITIAL_SPEED = 5
 
 class GameState:
-    
+
     def __init__(self, screen, model):
         """
             Initializes a game state, along with humans and the player
@@ -43,11 +43,11 @@ class GameState:
         """
         #   First, render the dead
         for h in self.dead_humans:
-            h.render_img(screen)
+            h.render_img()
 
         #   Then, render the living
         for h in self.humans:
-            h.render_img(screen)
+            h.render_img()
 
         #   Render the player last, at the highest layer
         self.the_player.render_img()
