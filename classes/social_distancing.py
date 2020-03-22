@@ -4,17 +4,17 @@
 
 import random
 import pygame
-from classes.gui import activeGui
 
 MIN_VELOCITY = 1
 VELOCITY_SPAN = 5
 KEEP_BEHAVIOUR_FOR_MS = 5000
 
-class SocialDistSimulationClass(object):
+class SocialDistancing(object):
 
-    def __init__(self):
+    def __init__(self, game_state):
         self._social_distancing = 0.5
-        activeGui.set_social_distancing_factor(self._social_distancing)
+        self.game_state = game_state
+        game_state.game_gui.set_social_distancing_factor(self._social_distancing)
 
         # Provisional: Set social distancing factor via command line.
         # Launch with 'python main.py 0.7' or any value between 0 and 1.
@@ -34,7 +34,7 @@ class SocialDistSimulationClass(object):
             raise ValueError('Value must be between zero and one')
 
         self._social_distancing = value
-        activeGui.set_social_distancing_factor(self._social_distancing)
+        self.game_state.game_gui.set_social_distancing_factor(self._social_distancing)
 
     def get_social_distancing(self):
         """
@@ -62,7 +62,3 @@ class SocialDistSimulationClass(object):
         rand_time = 0.5 + random.random()
 
         return int(v), int(rand_time * KEEP_BEHAVIOUR_FOR_MS)
-
-
-#   Import this:
-SocialDistancingSimulation = SocialDistSimulationClass()

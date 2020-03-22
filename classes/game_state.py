@@ -1,27 +1,53 @@
 import pygame
 
+from classes.abstract_controller import AbstractController
 from classes.human import human
 from classes.player import player
+from classes.game_gui import GameGui
+from classes.social_distancing import SocialDistancing
+
+from classes.app_instance import AppInstance
 
 N_HUMANS = 100
 HUMAN_RADIUS = 10
 HUMAN_INITIAL_SPEED = 5
 
-class GameState:
+class GameState(AbstractController):
 
     def __init__(self, screen, model):
         """
             Initializes a game state, along with humans and the player
         """
-        self.humans = [human(id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(N_HUMANS)]
+        self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(N_HUMANS)]
         self.humans[0].infection()
         self.dead_humans = []
         self.the_player = player(screen)
+        self.game_gui = GameGui()
+        self.social_distancing = SocialDistancing(self)
+
+    def start(self):
+        pass
+
+    def finish(self):
+        pass
 
     def frame_update(self):
         """
             Runs a single frame update. Moves, collides and updates sickness state of all humans.
         """
+
+        # Alle aufgelaufenen Events holen und abarbeiten.
+        for event in pygame.event.get():
+            # Spiel beenden, wenn wir ein QUIT-Event finden.
+            if event.type == pygame.QUIT:
+                AppInstance.running = False
+            # Wir interessieren uns auch für "Taste gedrückt"-Events.
+            if event.type == pygame.KEYDOWN:
+                self.the_player.handle_input(event.key)
+                # Wenn Escape gedrückt wird, posten wir ein QUIT-Event in Pygames Event-Warteschlange.
+                if event.key == pygame.K_ESCAPE:
+                    pygame.event.post(pygame.event.Event(pygame.QUIT))
+
         deceased = []
         for id, person in enumerate(self.humans):
             # normalize = True -> Geschwindigkeit ist konstant
@@ -51,6 +77,7 @@ class GameState:
 
         #   Render the player last, at the highest layer
         self.the_player.render_img()
+        self.game_gui.render(screen)
 
 #   Import these:
 

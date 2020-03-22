@@ -13,11 +13,10 @@ import numpy as np
 
 from classes.human import human
 from classes.player import player
-from classes.gui import activeGui
 from img_lib import get_image,  background
 from classes.model import Model
 from classes.game_state import initGameState
-
+from classes.abstract_controller import AbstractController
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
 
@@ -30,6 +29,10 @@ random.seed()
 N_humans = 50
 radius = 10
 speed = 5
+
+# Global State
+
+from classes.app_instance import AppInstance
 
 def main():
 
@@ -44,7 +47,9 @@ def main():
     # Init. game state
     model = Model()
     gameState = initGameState(screen, model)
-    me = gameState.the_player
+
+    #   Set gameState as first controller to be run
+    AppInstance.set_next_controller(gameState)
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
 
@@ -59,8 +64,9 @@ def main():
     # Clock-Objekt erstellen, das wir benötigen, um die Framerate zu begrenzen.
     clock = pygame.time.Clock()
     # Die Schleife, und damit unser Spiel, läuft solange running == True.
-    running = True
-    while running:
+    AppInstance.running = True
+    
+    while AppInstance.running:
         # Framerate auf 30 Frames pro Sekunde beschränken.
         # Pygame wartet, falls das Programm schneller läuft.
         clock.tick(30)
@@ -68,23 +74,18 @@ def main():
         #screen.fill((0,0,0))
         screen.blit(back.image,back.rect)
 
+        # Update controller
+        if AppInstance.next_controller is not None:
+            if AppInstance.active_controller is not None:
+                AppInstance.active_controller.finish()
+            AppInstance.active_controller = AppInstance.next_controller
+            AppInstance.next_controller = None
+            AppInstance.active_controller.start()
+
         # Update the game state
-        gameState.frame_update()
+        AppInstance.active_controller.frame_update()
 
-        # Alle aufgelaufenen Events holen und abarbeiten.
-        for event in pygame.event.get():
-            # Spiel beenden, wenn wir ein QUIT-Event finden.
-            if event.type == pygame.QUIT:
-                running = False
-            # Wir interessieren uns auch für "Taste gedrückt"-Events.
-            if event.type == pygame.KEYDOWN:
-                me.handle_input(event.key)
-                # Wenn Escape gedrückt wird, posten wir ein QUIT-Event in Pygames Event-Warteschlange.
-                if event.key == pygame.K_ESCAPE:
-                    pygame.event.post(pygame.event.Event(pygame.QUIT))
-
-        gameState.frame_render(screen)
-        activeGui.render(screen)
+        AppInstance.active_controller.frame_render(screen)
 
         pygame.display.update()
         # Inhalt von screen anzeigen.
