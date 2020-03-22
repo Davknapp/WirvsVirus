@@ -116,11 +116,13 @@ class human(object):
             Changes this human's speed while maintaining its direction of movement
         """
         v_norm = np.sqrt(self.movx**2 + self.movy**2)
-        v_direction_x = self.movx / v_norm
-        v_direction_y = self.movy / v_norm
+        if (v_norm != 0):
+            v_direction_x = self.movx / v_norm
+            v_direction_y = self.movy / v_norm
 
-        self.movx = v_direction_x * new_v_magnitude
-        self.movy = v_direction_y * new_v_magnitude
+            self.movx = v_direction_x * new_v_magnitude
+            self.movy = v_direction_y * new_v_magnitude
+
 
     def render_img(self):
         self.screen.blit(self.img, (self.posx, self.posy) )
