@@ -38,6 +38,7 @@ class player(AbstractHuman):
                    'recovered': 'recovered3.png',
                    'dead': 'myselfDead.png'
                    }
+        self.update_image()
 
     def handle_input(self, key):
         # linke Pfeiltaste wird gedrueckt

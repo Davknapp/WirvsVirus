@@ -41,6 +41,7 @@ class human(AbstractHuman):
         self.state = 'well'
         self.time_infected = None
         self.infector = None
+        self.update_image()
 
 
     def set_velocity_vector(self,  v):

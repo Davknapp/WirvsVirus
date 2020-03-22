@@ -12,8 +12,6 @@ class GameGui(object):
         # private attributes
         self.social_distancing_text = ''
 
-        pygame.font.init()
-
         self.default_font = pygame.font.Font(pygame.font.get_default_font(), 15)
         self.renderable_surfaces = {}
 
