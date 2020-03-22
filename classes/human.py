@@ -5,7 +5,6 @@ from img_lib import get_image
 from pygame.time import get_ticks as time_now
 
 from classes.social_distancing import SocialDistancingSimulation
-from classes.game_state import activeGameState
 from classes.abstract_human import AbstractHuman
 
 class human(AbstractHuman):
@@ -13,11 +12,13 @@ class human(AbstractHuman):
     #draw a cricle representing the human.
 
     def __init__(self, id, screen, model, v=5, r=10):
+
+        super(AbstractHuman, self).__init__()
+
         limit_x, limit_y = screen.get_size()
         self.id = id
         self.screen = screen
         self.model = model
-        self.collisions_active = True
         self.r = r
         self.v = v
         self.posx = random.randint(0,limit_x-2*r)
@@ -25,11 +26,13 @@ class human(AbstractHuman):
         self.alpha = random.random()*2*np.pi
         self.movx = np.cos(self.alpha)*self.v
         self.movy = np.sin(self.alpha)*self.v
-        self.state = 'well'
-        self.time_infected = None
         self.img = None
         self.set_velocity_vector(self.v)
         self.next_behaviour_change = 0
+        #   These member initializations have been moved to the AbstractHuman super class
+        #self.collisions_active = True
+        #self.state = 'well'
+        #self.time_infected = None
 
 
     def set_velocity_vector(self,  v):
@@ -59,14 +62,14 @@ class human(AbstractHuman):
         self.posy += self.movy
 
 
-    def collisions(self, humans, normalize=True):
+    def collisions(self, humans, player, normalize=True):
         # Collisions mechanics
         # Can't collide with anything when you're six feet under ground.
         if not self.collisions_active:
             return
         
         #for id in range(self.id+1, len(humans)):
-        for other in humans[self.id + 1:] + [activeGameState.the_player]:
+        for other in humans[self.id + 1:] + [player]:
             dx = self.posx - other.posx
             dy = self.posy - other.posy
             if (dx**2 + dy**2) < (2*self.r)**2:
@@ -84,14 +87,14 @@ class human(AbstractHuman):
                 self.movx = np.cos(angle) * self.v
                 self.movy = np.sin(angle) * self.v
 
-                if other != activeGameState.the_player:
+                if other != player:
                     other.movx = -np.cos(angle) * other.v
                     other.movy = -np.sin(angle) * other.v
 
                 if (other.state == 'infected' or other.state == 'ill'):
                     self.infection()
                 if (self.state == 'infected' or self.state == 'ill'):
-                    humans[id].infection()
+                    other.infection()
 
 
     def check_state(self):

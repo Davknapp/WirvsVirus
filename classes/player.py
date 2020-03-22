@@ -7,6 +7,9 @@ BASE_VELOCITY = 4
 class player(AbstractHuman):
 
     def __init__(self, screen):
+
+        super(AbstractHuman, self).__init__()
+        
         self.posx = 400
         self.posy = 300
         self.screen = screen
