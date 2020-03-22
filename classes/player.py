@@ -21,6 +21,8 @@ class player(AbstractHuman):
         self.collisions_active = True
         self.state = 'well'
         self.time_infected = None
+        # Set velocity
+        self.current_velocity = BASE_VELOCITY
 
         #self.render_img()
 
@@ -39,14 +41,14 @@ class player(AbstractHuman):
         # linke Pfeiltaste wird gedrueckt
         if key == pygame.K_LEFT:
             # x-Position der Spielfigur anpassen,
-            self.posx -= BASE_VELOCITY
+            self.posx -= self.current_velocity
         # und nochmal die rechte Pfeiltaste
         if key == pygame.K_RIGHT:
-            self.posx += BASE_VELOCITY
+            self.posx += self.current_velocity
         if key == pygame.K_UP:
-            self.posy -= BASE_VELOCITY
+            self.posy -= self.current_velocity
         if key == pygame.K_DOWN:
-            self.posy += BASE_VELOCITY
+            self.posy += self.current_velocity
 
         limit_x, limit_y = self.screen.get_size()
         if self.posx < 0: 
@@ -60,6 +62,14 @@ class player(AbstractHuman):
 
         if self.posy > limit_y-2*self.r:
             self.movy = limit_y-2 * self.r
+
+    def change_speed(self, new_speed):
+        """ Changes the speed with which the player moves.
+            This is most important when the player dies and its speed
+            is set to 0
+        """
+        self.current_velocity = new_speed
+
 
     # def movement(self):
 
