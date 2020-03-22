@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class AbstractController(ABC):
+    """
+        Abstract base class for controllers to control different phases of the game.
+    """
     
     @abstractmethod
     def frame_update(self):
