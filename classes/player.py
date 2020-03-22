@@ -12,7 +12,6 @@ class player(AbstractHuman):
         self.screen = screen
         self.img = pygame.transform.scale(get_image('myself3.png'), (30, 30))
         self.render_img()
-        the_player = self
 
     def handle_input(self, key):
         # linke Pfeiltaste wird gedrueckt
@@ -32,7 +31,3 @@ class player(AbstractHuman):
 
     def render_img(self):
         self.screen.blit(self.img, (self.posx, self.posy) )
-
-
-#   Import this to reference the player singleton object
-the_player = None

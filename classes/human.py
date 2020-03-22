@@ -5,7 +5,7 @@ from img_lib import get_image
 from pygame.time import get_ticks as time_now
 
 from classes.social_distancing import SocialDistancingSimulation
-from classes.player import the_player
+from classes.game_state import activeGameState
 from classes.abstract_human import AbstractHuman
 
 class human(AbstractHuman):
@@ -66,7 +66,7 @@ class human(AbstractHuman):
             return
         
         #for id in range(self.id+1, len(humans)):
-        for other in humans[self.id + 1:] + [the_player]:
+        for other in humans[self.id + 1:] + [activeGameState.the_player]:
             dx = self.posx - other.posx
             dy = self.posy - other.posy
             if (dx**2 + dy**2) < (2*self.r)**2:
@@ -83,8 +83,10 @@ class human(AbstractHuman):
                 angle = np.arctan2(dy, dx)
                 self.movx = np.cos(angle) * self.v
                 self.movy = np.sin(angle) * self.v
-                other.movx = -np.cos(angle) * other.v
-                other.movy = -np.sin(angle) * other.v
+
+                if other != activeGameState.the_player:
+                    other.movx = -np.cos(angle) * other.v
+                    other.movy = -np.sin(angle) * other.v
 
                 if (other.state == 'infected' or other.state == 'ill'):
                     self.infection()
