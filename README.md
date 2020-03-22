@@ -25,6 +25,8 @@ or
 python main.py
 ```
 
+And then use the arrow keys to escape the virus.
+
 You can additionally provide a social distancing factor between 0 and 1 as an argument.
 
 ```
