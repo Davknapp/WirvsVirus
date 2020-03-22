@@ -23,10 +23,6 @@ class GameState(AbstractController):
         """
             Initializes a game state, along with humans and the player
         """
-<<<<<<< HEAD
-        self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(model.N_humans)]
-        self.humans[0].infection()
-=======
         stat_names = [
             'infected_total',
             'infected_by_player',
@@ -48,15 +44,11 @@ class GameState(AbstractController):
         self.level_stats = LevelStats(stat_names, stat_texts)
 
         self.the_player = player(self, screen, model)
-        self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(N_HUMANS)]
->>>>>>> master
+        self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(model.N_humans)]
         self.dead_humans = []
         self.game_gui = GameGui()
-<<<<<<< HEAD
-        self.social_distancing = SocialDistancing(self, model.social_distancing)
-=======
         self.back = background('map.png', [0,0])
-        self.social_distancing = SocialDistancing(self)
+        self.social_distancing = SocialDistancing(self, model.social_distancing)
         self._infected_count = 0
         self.start_time = 0
         self.end_condition_met_at = -1.
@@ -87,7 +79,6 @@ class GameState(AbstractController):
         """
         self.end_condition_met_at = pygame.time.get_ticks()
         self.level_stats.end_reason = 'Du bist gestorben!'
->>>>>>> master
 
     def start(self):
         self.start_time = pygame.time.get_ticks()
@@ -153,8 +144,6 @@ class GameState(AbstractController):
         #   Render the player last, at the highest layer
         self.the_player.render_img()
         self.game_gui.render(screen)
-<<<<<<< HEAD
-=======
 
 
     def end_level(self):
@@ -166,4 +155,3 @@ class GameState(AbstractController):
         results_view = ResultsView(self.level_stats)
 
         AppInstance.set_next_controller(results_view)
->>>>>>> master
