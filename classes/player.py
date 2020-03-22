@@ -8,7 +8,7 @@ class player(object):
         self.posy = 300
         self.screen = screen
         self.img = pygame.transform.scale(get_image('myself.png'), (20, 20))
-        self.render()
+        self.render_img()
 
     def handle_input(self, key):
         # linke Pfeiltaste wird gedrueckt
@@ -23,5 +23,5 @@ class player(object):
         if key == pygame.K_DOWN:
             self.posy += 1
 
-    def render(self):
+    def render_img(self):
         self.screen.blit(self.img, (self.posx, self.posy) )

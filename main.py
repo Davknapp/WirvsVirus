@@ -13,6 +13,7 @@ import numpy as np
 
 from classes.human import human
 from classes.player import player
+from classes.gui import activeGui
 from img_lib import get_image,  background
 from classes.model import Model
 
@@ -41,7 +42,7 @@ def main():
     #screen.fill([255, 255, 255])
     # Init. humans
     model = Model()
-    humans = [human(id, screen, model, r=radius, v=speed) for id in range(N_humans)]
+    humans = [human(id, screen, model,  v=speed,  r=radius) for id in range(N_humans)]
     humans[0].infection()
     #me_img = pygame.transform.scale(get_image('myself.png'), (20, 20))
     me = player(screen)
@@ -77,7 +78,7 @@ def main():
             person.collisions(humans, normalize=True)
             person.check_state()
             person.movement()
-            person.render(screen)
+            person.render_img(screen)
 
         for event in pygame.event.get():
             # Spiel beenden, wenn wir ein QUIT-Event finden.
@@ -89,8 +90,10 @@ def main():
                 # Wenn Escape gedrückt wird, posten wir ein QUIT-Event in Pygames Event-Warteschlange.
                 if event.key == pygame.K_ESCAPE:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
-                    
-        me.render()
+
+        me.render_img()
+        activeGui.render(screen)
+
         pygame.display.update()
         # Inhalt von screen anzeigen.
         pygame.display.flip()

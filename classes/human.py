@@ -4,6 +4,8 @@ import numpy as np
 from img_lib import get_image
 from pygame.time import get_ticks as time_now
 
+from classes.social_distancing import SocialDistancingSimulation
+
 class human(object):
     #define position of the human,  and the current movement.
     #draw a cricle representing the human.
@@ -15,7 +17,7 @@ class human(object):
         self.model = model
         self.collisions_active = True
         self.r = r
-        self.v = v
+        self.v=v
         self.posx = random.randint(0,limit_x)
         self.posy = random.randint(0,limit_y)
         self.alpha = random.random()*2*np.pi
@@ -24,8 +26,22 @@ class human(object):
         self.state = 'well'
         self.time_infected = None
         self.img = None
+        self.set_velocity_vector(self.v)
+        self.next_behaviour_change = 0
+
+
+    def set_velocity_vector(self,  v):
+        self.v = v
+        self.movx = np.cos(self.alpha) *v
+        self.movy = np.sin(self.alpha) * v
 
     def movement(self):
+        # Maybe change behaviour
+        if pygame.time.get_ticks() > self.next_behaviour_change:
+            v, next_change = SocialDistancingSimulation.next_velocity()
+            self.next_behaviour_change += next_change
+            self.set_velocity_vector(v)
+
         # Boundary reflection
         limit_x, limit_y = self.screen.get_size()
         if (self.posx <= 0) or (self.posx >= limit_x):
@@ -35,6 +51,7 @@ class human(object):
 
         self.posx += self.movx
         self.posy += self.movy
+
 
     def collisions(self, humans, normalize=True):
         # Collisions mechanics
@@ -81,5 +98,8 @@ class human(object):
         self.state = 'infected'
         self.time_infected = time_now()
 
-    def render(self, screen):
+    def change_velocity(self):
+        pass
+
+    def render_img(self, screen):
         screen.blit(self.img, (self.posx, self.posy) )
