@@ -5,8 +5,10 @@ from img_lib import get_image
 from pygame.time import get_ticks as time_now
 
 from classes.social_distancing import SocialDistancingSimulation
+from classes.player import the_player
+from classes.abstract_human import AbstractHuman
 
-class human(object):
+class human(AbstractHuman):
     #define position of the human,  and the current movement.
     #draw a cricle representing the human.
 
@@ -55,26 +57,29 @@ class human(object):
 
     def collisions(self, humans, normalize=True):
         # Collisions mechanics
-        for id in range(self.id+1, len(humans)):
-            dx = self.posx - humans[id].posx
-            dy = self.posy - humans[id].posy
+        #for id in range(self.id+1, len(humans)):
+        for other in humans[self.id + 1:] + [the_player]:
+            dx = self.posx - other.posx
+            dy = self.posy - other.posy
             if not self.collisions_active: continue
             if (dx**2 + dy**2) < (2*self.r)**2:
                 if normalize:
                     vx, vy = self.v, self.v
                 else:
-                    vx = np.sqrt(self.movx**2 + humans[id].movx**2)
-                    vy = np.sqrt(self.movy**2 + humans[id].movy**2)
+                    vx = np.sqrt(self.movx**2 + other.movx**2)
+                    vy = np.sqrt(self.movy**2 + other.movy**2)
                 angle = np.arctan2(dy, dx)
                 self.movx = np.cos(angle)*vx
                 self.movy = np.sin(angle)*vy
-                humans[id].movx = -np.cos(angle)*vx
-                humans[id].movy = -np.sin(angle)*vy
+                if other != the_player:
+                    other.movx = -np.cos(angle)*vx
+                    other.movy = -np.sin(angle)*vy
 
                 if (humans[id].state == 'infected' or humans[id].state == 'ill'):# and (self.state != 'infected' and self.state != 'ill'):
                     self.infection()
                 if (self.state == 'infected' or self.state == 'ill'): #and (humans[id].state == 'infected' and humans[id].state == 'ill'):
                     humans[id].infection()
+
 
     def check_state(self):
         self.model.set_state(self)

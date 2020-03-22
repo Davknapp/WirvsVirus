@@ -1,7 +1,10 @@
 import pygame
 from img_lib import get_image
+from classes.abstract_human import AbstractHuman
 
-class player(object):
+BASE_VELOCITY = 4
+
+class player(AbstractHuman):
 
     def __init__(self, screen):
         self.posx = 400
@@ -9,6 +12,7 @@ class player(object):
         self.screen = screen
         self.img = pygame.transform.scale(get_image('myself.png'), (20, 20))
         self.render_img()
+        the_player = self
 
     def handle_input(self, key):
         # linke Pfeiltaste wird gedrueckt
@@ -23,5 +27,12 @@ class player(object):
         if key == pygame.K_DOWN:
             self.posy += 1
 
+    def movement(self):
+
+
     def render_img(self):
         self.screen.blit(self.img, (self.posx, self.posy) )
+
+
+#   Import this to reference the player singleton object
+the_player = None
