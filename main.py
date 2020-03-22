@@ -29,6 +29,7 @@ N_humans = 100
 radius = 10
 speed = 5
 
+
 def main():
 
     # Initialisieren aller Pygame-Module und
@@ -43,6 +44,8 @@ def main():
     model = Model()
     humans = [human(id, screen, model, r=radius, v=speed) for id in range(N_humans)]
     humans[0].infection()
+    for id in range(0, N_humans, 10):
+        humans[id].become_leader()
     #me_img = pygame.transform.scale(get_image('myself.png'), (20, 20))
     me = player(screen)
 

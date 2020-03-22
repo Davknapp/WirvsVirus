@@ -4,6 +4,8 @@ import numpy as np
 from img_lib import get_image
 from pygame.time import get_ticks as time_now
 
+group_size = 5
+
 class human(object):
     #define position of the human,  and the current movement.
     #draw a cricle representing the human.
@@ -25,6 +27,18 @@ class human(object):
         self.time_infected = None
         self.img = None
 
+        self.group_leader = False
+        self.member = False
+        self.group = []
+        self.leader = -1
+
+    #Group leaders lead the direction of up to five people
+    def become_leader(self):
+        self.group_leader = True
+        self.member = True
+        self.leader = self.id
+
+
     def movement(self):
         # Boundary reflection
         limit_x, limit_y = self.screen.get_size()
@@ -35,6 +49,14 @@ class human(object):
 
         self.posx += self.movx
         self.posy += self.movy
+
+    def group_movement(self,humans):
+        if (self.group_leader == False):
+            return
+        else:
+            for id in self.group:
+                humans[id].movx = self.movx
+                humans[id].movy = self.movy
 
     def collisions(self, humans, normalize=True):
         # Collisions mechanics
@@ -53,11 +75,27 @@ class human(object):
                 self.movy = np.sin(angle)*vy
                 humans[id].movx = -np.cos(angle)*vx
                 humans[id].movy = -np.sin(angle)*vy
+                if( self.group_leader == True ):
+                    self.group_movement(humans)
+                if(humans[id].group_leader == True):
+                    humans[id].group_movement(humans)
+                if(self.leader >= 0):
+                    humans[self.leader].group_movement(humans)
+                if(humans[id].leader >=0):
+                    humans[humans[id].leader].group_movement(humans)
 
                 if (humans[id].state == 'infected' or humans[id].state == 'ill'):# and (self.state != 'infected' and self.state != 'ill'):
                     self.infection()
                 if (self.state == 'infected' or self.state == 'ill'): #and (humans[id].state == 'infected' and humans[id].state == 'ill'):
                     humans[id].infection()
+            #if (dx**2 + dy**2) < (20**2):
+                if(self.group_leader == True and len(self.group) < group_size and humans[id].member == False):
+                    humans[id].movx = self.movx
+                    humans[id].movy = self.movy
+                    humans[id].member = True
+                    humans[id].leader = self.id
+                    self.group.append(id)
+
 
     def check_state(self):
         self.model.set_state(self)
