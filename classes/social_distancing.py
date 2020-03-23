@@ -11,8 +11,8 @@ KEEP_BEHAVIOUR_FOR_MS = 5000
 
 class SocialDistancing(object):
 
-    def __init__(self, game_state):
-        self._social_distancing = 0.5
+    def __init__(self, game_state, soc_dist = 0.5):
+        self._social_distancing = soc_dist
         self.game_state = game_state
         game_state.game_gui.set_social_distancing_factor(self._social_distancing)
 

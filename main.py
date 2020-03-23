@@ -15,6 +15,7 @@ from classes.human import human
 from classes.player import player
 from classes.model import Model
 from classes.game_state import GameState
+from classes.gui_state import GUIState
 from classes.abstract_controller import AbstractController
 
 # Überprüfen, ob die optionalen Text- und Sound-Module geladen werden konnten.
@@ -47,9 +48,11 @@ def main():
     # Init. game state
     model = Model()
     gameState = GameState(screen, model)
+    guiState = GUIState(screen, model)
 
     #   Set gameState as first controller to be run
-    AppInstance.set_next_controller(gameState)
+    # AppInstance.set_next_controller(gameState)
+    AppInstance.set_next_controller(guiState)
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
 
@@ -65,7 +68,7 @@ def main():
     clock = pygame.time.Clock()
     # Die Schleife, und damit unser Spiel, läuft solange running == True.
     AppInstance.running = True
-    
+
     while AppInstance.running:
         # Framerate auf 30 Frames pro Sekunde beschränken.
         # Pygame wartet, falls das Programm schneller läuft.

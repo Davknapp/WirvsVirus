@@ -44,11 +44,11 @@ class GameState(AbstractController):
         self.level_stats = LevelStats(stat_names, stat_texts)
 
         self.the_player = player(self, screen, model)
-        self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(N_HUMANS)]
+        self.humans = [human(self, id, screen, model,  v=HUMAN_INITIAL_SPEED,  r=HUMAN_RADIUS) for id in range(model.N_humans)]
         self.dead_humans = []
         self.game_gui = GameGui()
         self.back = background('map.png', [0,0])
-        self.social_distancing = SocialDistancing(self)
+        self.social_distancing = SocialDistancing(self, model.social_distancing)
         self._infected_count = 0
         self.start_time = 0
         self.end_condition_met_at = -1.
