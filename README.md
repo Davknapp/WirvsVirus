@@ -11,6 +11,30 @@ There are already multiple simulation approaches that illustrate and explain the
 
 Recommended: Create a virtual environment (e.g. using conda) and install all requirements using ´pip install -r requirements.txt´
 
+## How to run the simulation
+
+In the main directory just execute the main.py file with python:
+
+```
+python3 main.py
+```
+
+or
+
+```
+python main.py
+```
+
+And then use the arrow keys to escape the virus.
+
+You can additionally provide a social distancing factor between 0 and 1 as an argument.
+
+```
+python3 main.py 0.8
+```
+
+simulates 80% social distancing.
+
 ## Repo structure and coding style
 
 - Every class gets its own file in the classes folder or a subfolder of the classes folder
