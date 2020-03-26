@@ -14,10 +14,10 @@ class GUIState(AbstractController):
         """
         self.screen = screen
         self.model = model
-        self.buttons = [Button(screen, (300,400), (200,100), 'Start', (159,255,148), (255,136,77), self.start_game)]
+        self.buttons = [Button((300,400), (200,100), 'Start', (159,255,148), (255,136,77), self.start_game)]
         self.sliders = [
-                        Slider(screen, (450,150), 250, 15, 50, [1,100]),
-                        Slider(screen, (450,250), 250, 15, 0.5, [0,1]),
+                        Slider((450,150), 250, 15, 50, [1,100]),
+                        Slider((450,250), 250, 15, 0.5, [0,1]),
                         ]
 
         screen.fill((255, 255, 255))

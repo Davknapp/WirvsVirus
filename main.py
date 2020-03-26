@@ -47,11 +47,9 @@ def main():
     #screen.fill([255, 255, 255])
     # Init. game state
     model = Model()
-    gameState = GameState(screen, model)
     guiState = GUIState(screen, model)
 
-    #   Set gameState as first controller to be run
-    # AppInstance.set_next_controller(gameState)
+    #   Set guiState as first controller to be run
     AppInstance.set_next_controller(guiState)
 
     # Titel des Fensters setzen, Mauszeiger nicht verstecken und Tastendrücke wiederholt senden.
